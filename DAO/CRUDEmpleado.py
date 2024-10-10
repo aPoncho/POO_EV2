@@ -23,19 +23,19 @@ def agregar(e):
 def editar(e):
     try:
         con=Conexion(host, user, password, db)
-        sql="UPDATE empleados SET RUT='{}', Nombre_e='{}', Apellido_e='{}', Direccion_e='{}', Fono_e={}, Correo_e='{}',"\
-            "Cargo_e='{}',Salario_e={},Departamento_e='{}' WHERE id={} ".format(c[1],c[2],c[3],[4],c[5],c[6],c[7],c[8],c[9],c[0])
+        sql="UPDATE empleados SET RUT_e='{}', Nombre_e='{}', Apellido_e='{}', Direccion_e='{}', Fono_e={}, Correo_e='{}',"\
+            "Cargo_e='{}',Salario_e={},Departamento_e='{}' WHERE ID_empleado={} ".format(e[1],e[2],e[3],e[4],e[5],e[6],e[7],e[8],e[9],e[0])
         con.ejecuta_query(sql)
         con.commit()
         input("\n \n Datos modificados satisfactoreamente")
         con.desconectar()
-    except Exception as e:
-        print(e)
+    except Exception as i:
+        print(i)
 
 def eliminar(id):
     try:
         con=Conexion(host, user, password, db)
-        sql= "DELETE FROM empleados WHERE id={}".format(id)
+        sql= "DELETE FROM empleados WHERE ID_empleado={}".format(id)
         con.ejecuta_query(sql)
         con.commit()
         input("\n \n Empleado Elimindado satisfactoreamente")
@@ -57,7 +57,7 @@ def mostrartodos():
 def consultaparticular(id):
     try:
         con=Conexion(host, user, password, db)
-        sql="select * from empleados where id={}".format(id)
+        sql="select * from empleados where ID_empleado={}".format(id)
         cursor=con.ejecuta_query(sql)
         datos=cursor.fetchone()
         con.desconectar()
