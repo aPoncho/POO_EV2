@@ -797,7 +797,7 @@ def eliminardatos_departamento():
 # ---- EMPLEADO ----
 def menuempleados():
     while (True):
-        #os.system('cls')
+        os.system('cls')
         print("===============================")
         print("   M E N Ú  E M P L E A D O S  ")
         print("===============================")
@@ -937,16 +937,36 @@ def ingresardatos_empleados():
             continue
         else:
             break
-    
+    print("====================================")
+    print(" MUESTRA DE TODOS LOS DEPARTAMENTOS ")
+    print("====================================")
+    datos = DAO.CRUDDepartamento.mostrartodos()
+    if len(datos) == 0:
+        print("No hay departamentos en la base de datos ")
+        time.sleep(1)
+        print("Volviendo...")
+        time.sleep(2)
+        menuempleados()
+    else:
+        for dato in datos:
+            print(
+                " ID : {} - NOMBRE : {} - UBICACION: {} - GERENTE : {} ".format(dato[0], dato[1], dato[2], dato[3]))
+            print("--------------------------------------------------------------------------------------------------------------------------------------------------------")
+    time.sleep(2)
     while True:
-        depto=input("INGRESE DEPARTAMENTO : ")
-        if not nombre.isalpha():
-            print("Debe ingresar un departamento válido.")
-            time.sleep(1)
+        try:
+            opcion = int(input("INGRESE ID DE DEPARTAMENTO : "))
+            datos = DAO.CRUDDepartamento.consultaparticular(opcion)
+            if datos is None:
+                print(" No hay departamentos con ese id ")
+                continue
+            else:
+                depto = datos[0]
+                break
+        except ValueError:
+            print("Ingrese un numero.")
+            time.sleep(2)
             continue
-        else:
-            break
-
     e = Empleado(run, nombre, apellido, direccion, fono, correo, cargo, salario, depto)
     DAO.CRUDEmpleado.agregar(e)
 
