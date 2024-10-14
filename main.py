@@ -9,7 +9,7 @@ from DTO.Empleado import Empleado
 from DTO.Proyecto import Proyecto
 from DTO.Departamento import Departamento
 from DTO.Registro import Registro
-
+from DTO.GestionEmpleados import GestionEmpleados
 
 def menuprincipal():
     os.system('cls')
@@ -848,17 +848,21 @@ def menumostrar_empleados():
             os.system("cls")
             continue
         if op == 1:
-            mostrartodo_empleados()
+            os.system('cls')
+            print(GestionEmpleados())
+            os.system("pause")
         elif op == 2:
-            mostraruno_empleados()
+            print(GestionEmpleados.mostrar_uno())
+            os.system("pause")
         elif op == 3:
+            input("\n\n PRESIONE CUALQUIER TECLA PARA CONTINUAR")
             mostrarparcial_empleados()
         elif op == 4:
             break
         else:
             print("Opción Fuera de Rango")
             time.sleep(2)
-# Mostrar
+
 def ingresardatos_empleados():
     os.system('cls')
     print("===============================")
@@ -967,24 +971,9 @@ def ingresardatos_empleados():
             print("Ingrese un numero.")
             time.sleep(2)
             continue
-    e = Empleado(run, nombre, apellido, direccion, fono, correo, cargo, salario, depto)
-    DAO.CRUDEmpleado.agregar(e)
 
-def mostrartodo_empleados():
-    os.system('cls')
-    print("================================")
-    print(" MUESTRA DE TODOS LOS EMPLEADOS ")
-    print("================================")
-    datos = DAO.CRUDEmpleado.mostrartodos()
-    if len(datos) == 0:
-        print("No hay empleados en la base de datos ")
-    else:
-        for dato in datos:
-            print(
-                " ID : {} - RUN : {} - NOMBRE : {} - APELLIDO : {} - DIRECCION : {} - FONO : {} - CORREO : {} - CARGO : {} - SALARIO : {} - DEPARTAMENTO : {} ".format(dato[0], dato[1], dato[2], dato[3], dato[4], dato[5], dato[6], dato[7], dato[8], dato[9]))
-            print("--------------------------------------------------------------------------------------------------------------------------------------------------------")
-    time.sleep(2)
-    os.system("pause")
+    nuevo_empleado = Empleado(run, nombre, apellido, direccion, fono, correo, cargo, salario, depto)
+    GestionEmpleados.agregar_empleado(nuevo_empleado)
 
 def mostraruno_empleados():
     while True:
@@ -999,33 +988,17 @@ def mostraruno_empleados():
             time.sleep(2)
             continue
         break
-    datos = DAO.CRUDEmpleado.consultaparticular(op)
-    if datos is None:
-        print(" No hay proyectos con ese id ")
-    else:
-        print("\n=====================================")
-        print("     MUESTRA DE DATOS DEL EMPLEADO     ")
-        print("=======================================")
-        print(" ID               : {}".format(datos[0]))
-        print(" RUN              : {}".format(datos[1]))
-        print(" NOMBRE           : {}".format(datos[2]))
-        print(" APELLIDO         : {}".format(datos[3]))
-        print(" DIRECCION        : {}".format(datos[4]))
-        print(" FONO             : {}".format(datos[5]))
-        print(" CORREO           : {}".format(datos[6]))
-        print(" CARGO            : {}".format(datos[7]))
-        print(" SALARIO          : {}".format(datos[8]))
-        print(" DEPARTAMENTO     : {}".format(datos[9]))
-        print("=======================================")
+    print(GestionEmpleados.mostrar_uno(op))
     input("\n\n PRESIONE ENTER PARA CONTINUAR")
 
 def mostrarparcial_empleados():
     os.system('cls')
     print("=======================================")
-    print("   MUESTRA PARCIALMENTE LOS CLIENTES   ")
+    print("   MUESTRA PARCIALMENTE LOS EMPLEADOS  ")
     print("=======================================")
-    cant = int(input("\nIngrese la Cantidad de Clientes a Mostrar : "))
-    datos = DAO.CRUDEmpleado.consultaparcial(cant)
+    datos = GestionEmpleados.mostrar_parcial()
+    #cant = int(input("\nIngrese la Cantidad de Clientes a Mostrar : "))
+    #datos = DAO.CRUDEmpleado.consultaparcial(cant)
     for dato in datos:
         print(
             " ID : {} - RUN : {} - NOMBRE : {} - APELLIDO : {} - DIRECCION : {} - FONO : {} - CORREO : {} - MONTO CREDITO : {} - DEUDA : {} - TIPO : {} ".format(dato[0], dato[1], dato[2], dato[3], dato[4], dato[5], dato[6], dato[7], dato[8], dato[9]))

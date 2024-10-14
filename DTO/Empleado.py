@@ -1,3 +1,6 @@
+import os
+import time
+import DAO.CRUDEmpleado
 
 class Empleado():
 
@@ -14,4 +17,3 @@ class Empleado():
 
     def __str__(self) -> str:
         return f"{self.nombre} {self.apellido}, {self.cargo}"
-    

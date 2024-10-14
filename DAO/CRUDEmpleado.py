@@ -42,7 +42,7 @@ def eliminar(id):
     except Exception as i:
         print(i)
 
-def mostrartodos():
+def obtener_todos():
     try:
         con=Conexion(host, user, password, db)
         sql= "SELECT * FROM empleados "
@@ -54,7 +54,7 @@ def mostrartodos():
         con.rollback()
         print(i)
 
-def consultaparticular(id):
+def obtener_uno(id):
     try:
         con=Conexion(host, user, password, db)
         sql="select * from empleados where ID_empleado={}".format(id)
@@ -66,12 +66,12 @@ def consultaparticular(id):
         con.rollback()
         print(i)
 
-def consultaparcial(cant):
+def consulta_parcial(cant):
     try:
         con=Conexion(host, user, password, db)
         sql="select * from empleados"
         cursor= con.ejecuta_query(sql)
-        datos=cursor.fetchmany(size-cant)
+        datos=cursor.fetchmany(cant)
         con.desconectar()
         return datos
     except Exception as i:
