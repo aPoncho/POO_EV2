@@ -44,11 +44,4 @@ class GestionEmpleados():
                 time.sleep(1)
             DAO.CRUDEmpleado.eliminar(eliminar)
             break
-
-    def eliminar_varios():
-        datos = DAO.CRUDEmpleado.consulta_dpto()
-        lista_id = []
-        for dato in datos:
-            lista_id.append(dato[0])
-
-        DAO.CRUDEmpleado.eliminar(lista_id)
+    

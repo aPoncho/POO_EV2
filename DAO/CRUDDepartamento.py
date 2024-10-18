@@ -44,7 +44,7 @@ def editar(d):
         print(i)
 
 
-def mostrartodos():
+def obtener_todos():
     try:
         con=Conexion(host, user, password, db)
         sql= "SELECT * FROM departamentos "

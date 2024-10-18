@@ -224,7 +224,7 @@ def modificardatos_empleados():
         return
     print(GestionEmpleados())
     mod = int(input("Ingrese valor de ID del Empleado que desea Modificar: "))
-    datos = DAO.CRUDEmpleado.consultaparticular(mod)
+    datos = GestionEmpleados.mostrar_uno(mod)
 
     print("\n ID         : {}".format(datos[0]))
     listanuevos.append(datos[0])
@@ -335,18 +335,13 @@ def eliminardatos_empleados():
     print("=========================================")
     print("       MODULO ELIMINAR EMPLEADOS         ")
     print("=========================================")
-    datos = DAO.CRUDEmpleado.mostrartodos()
+
+    datos = GestionEmpleados()
     if len(datos) == 0:
         print("No hay Empleados en la base de datos ")
         time.sleep(2)
         os.system("pause")
         return
-    GestionEmpleados()
-    while True:
-            try:
-                elim = int(input("Ingrese valor de ID del Empleado que desea Eliminar : "))
-            except ValueError:
-                print("Ingrese un numero.")
-                time.sleep(2)
-            DAO.CRUDEmpleado.eliminar(elim)
-            break
+    else:
+        print(GestionEmpleados())
+        GestionEmpleados.eliminar_uno()
