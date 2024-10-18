@@ -1,4 +1,5 @@
 import DAO.CRUDEmpleado
+import time
 
 class GestionEmpleados():
     def __init__(self):
@@ -33,3 +34,21 @@ class GestionEmpleados():
         cantidad = int(input("\nIngrese la Cantidad de Empleados a Mostrar : "))
         datos = DAO.CRUDEmpleado.consulta_parcial(cantidad)
         return datos
+    
+    def eliminar_uno():
+        while True:
+            try:
+                eliminar = int(input("Ingrese valor de ID del Empleado que desea Eliminar : "))
+            except ValueError:
+                print("Ingrese un numero.")
+                time.sleep(1)
+            DAO.CRUDEmpleado.eliminar(eliminar)
+            break
+
+    def eliminar_varios():
+        datos = DAO.CRUDEmpleado.consulta_dpto()
+        lista_id = []
+        for dato in datos:
+            lista_id.append(dato[0])
+
+        DAO.CRUDEmpleado.eliminar(lista_id)

@@ -78,4 +78,16 @@ def consulta_parcial(cant):
         con.rollback()
         print(i)
 
+def consulta_dpto(id):
+    try:
+        con=Conexion(host, user, password, db)
+        sql="select * from empleados where ID_departamento={}".format(id)
+        cursor=con.ejecuta_query(sql)
+        datos=cursor.fetchone()
+        con.desconectar()
+        return datos
+    except Exception as i:
+        con.rollback()
+        print(i)
+
 
