@@ -12,7 +12,7 @@ db='empresa'
 def agregar(p):
     try:
         con= Conexion(host, user, password, db)
-        sql= "INSERT INTO proyectos SET Nombre_p='{}', Descripcion_p='{}',Fecha_inicio_p='{}'".format(p.nombre_proyecto,p.descripcion_proyecto,p.fecha_inicio_proyecto)
+        sql= "INSERT INTO proyectos SET Nombre_p='{}', Descripcion_p='{}',Fecha_inicio_p='{}', ID_DEPARTAMENTO={}".format(p.nombre_proyecto,p.descripcion_proyecto,p.fecha_inicio_proyecto,p.id_departamento)
         con.ejecuta_query(sql)
         con.commit()
         input("\n\n Datos Ingresados Satisfactoreamente")
@@ -35,7 +35,7 @@ def eliminar(id):
 def editar(p):
     try:
         con=Conexion(host, user, password, db)
-        sql="UPDATE proyectos SET Nombre_p='{}', Descripcion_p='{}', Fecha_inicio_p={} WHERE ID_proyecto={} ".format(p[1],p[2],p[3],p[0])
+        sql="UPDATE proyectos SET Nombre_p='{}', Descripcion_p='{}', Fecha_inicio_p={}, ID_DEPARTAMENTO={} WHERE ID_proyecto={} ".format(p[1],p[2],p[3],p[4],p[0])
         con.ejecuta_query(sql)
         con.commit()
         input("\n \n Datos modificados satisfactoreamente")
@@ -61,6 +61,19 @@ def consultaparticular(id):
     try:
         con=Conexion(host, user, password, db)
         sql="select * from proyectos where ID_proyecto={}".format(id)
+        cursor=con.ejecuta_query(sql)
+        datos=cursor.fetchone()
+        con.desconectar()
+        return datos
+    except Exception as i:
+        con.rollback()
+        print(i)
+
+    
+def consulta_dpto(id):
+    try:
+        con=Conexion(host, user, password, db)
+        sql="select * from proyectos where ID_DEPARTAMENTO={}".format(id)
         cursor=con.ejecuta_query(sql)
         datos=cursor.fetchone()
         con.desconectar()

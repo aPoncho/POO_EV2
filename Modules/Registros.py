@@ -3,6 +3,14 @@ from datetime import date
 from  DTO.Registro import Registro
 import DAO.CRUDRegistro
 
+def eliminar_varios_r(id_depto):
+        datos = [DAO.CRUDRegistro.consulta_dpto(id_depto)]
+        lista_id = []
+        for dato in datos:
+            lista_id.append(dato[0])
+        for id in lista_id:
+            DAO.CRUDRegistro.eliminar(id)
+            
 # ----REGISTROS----
 def menuregistros():
     while True:
@@ -104,7 +112,7 @@ def ingresar_registros():
         except ValueError:
             print("Debe ingresar dígitos.")
     while True:
-        descripcion = input("INGRESE DESCRIPCION PROYECTO : ")
+        descripcion = input("INGRESE DESCRIPCION REGISTRO : ")
         if len(descripcion) > 300:
             print("Descripcion muy larga (Max 300 caracteres)")
             time.sleep(1)
@@ -112,7 +120,38 @@ def ingresar_registros():
         else:
             break
 
-    r = Registro(fecha, horas_int, descripcion)
+    print("====================================")
+    print("    MUESTRA DE TODOS LOS EMPLEADOS  ")
+    print("====================================")
+    datos = DAO.CRUDEmpleado.mostrartodos()
+    if len(datos) == 0:
+        print("No hay empleados en la base de datos ")
+        time.sleep(1)
+        print("Volviendo...")
+        time.sleep(2)
+        return
+    else:
+        for dato in datos:
+            print(
+                " ID : {} - RUN : {} - NOMBRE : {} - APELLIDO : {} - DIRECCION : {} - FONO : {} - CORREO : {} - CARGO : {} - SALARIO : {} - DEPARTAMENTO : {} ".format(dato[0], dato[1], dato[2], dato[3], dato[4], dato[5], dato[6], dato[7], dato[8], dato[9]))
+            print("--------------------------------------------------------------------------------------------------------------------------------------------------------")
+    time.sleep(2)
+    while True:
+        try:
+            opcion = int(input("INGRESE ID DE EMPLEADO AL QUE DESEA VINCULAR : "))
+            datos = DAO.CRUDEmpleado.consultaparticular(opcion)
+            if datos is None:
+                print(" No hay empleados con ese id ")
+                continue
+            else:
+                id_empleado = datos[0]
+                break
+        except ValueError:
+            print("Ingrese un numero.")
+            time.sleep(2)
+            continue
+
+    r = Registro(fecha, horas_int, descripcion, id_empleado)
     DAO.CRUDRegistro.agregar(r)
 # Mostrar
 def menumostrar_registros():
@@ -167,7 +206,7 @@ def mostrartodo_registros():
     else:
         for dato in datos:
             print(
-                " ID : {} - FECHA : {} - CANTIDAD DE HORAS TRABAJADAS : {} - DESCRIPCION : {} ".format(dato[0], dato[1], dato[2], dato[3]))
+                " ID : {} - FECHA : {} - CANTIDAD DE HORAS TRABAJADAS : {} - DESCRIPCION : {} - ID EMPLEADO VINCULADO : {}".format(dato[0], dato[1], dato[2], dato[3], dato[4]))
             print("--------------------------------------------------------------------------------------------------------------------------------------------------------")
     time.sleep(2)
     os.system("pause")
@@ -196,7 +235,8 @@ def mostraruno_registros():
         print(" FECHA                      : {}".format(datos[1]))
         print(" CANT. DE HORAS TRABAJADAS  : {}".format(datos[2]))
         print(" DESCRIPCION                : {}".format(datos[3]))
-        print("=================================================")
+        print(" ID EMPLEADO VINCULADO      : {}".format(datos[4]))
+        print("================================================")
     input("\n\n PRESIONE ENTER PARA CONTINUAR")
 # Modificar datos
 def modificardatos_registros():
@@ -281,6 +321,42 @@ def modificardatos_registros():
             listanuevos.append(descnueva)
     else:
         listanuevos.append(datos[3])
+    
+    opm = input("DESEA MODIFICAR EL EMPLEADO VINCULADO : {} - [SI/NO] ".format(datos[4]))
+    if opm.lower() == "si":
+        print("====================================")
+        print("    MUESTRA DE TODOS LOS EMPLEADOS  ")
+        print("====================================")
+        datos = DAO.CRUDEmpleado.mostrartodos()
+        if len(datos) == 0:
+            print("No hay empleados en la base de datos ")
+            time.sleep(1)
+            print("Volviendo...")
+            time.sleep(2)
+            return
+        else:
+            for dato in datos:
+                print(
+                    " ID : {} - RUN : {} - NOMBRE : {} - APELLIDO : {} - DIRECCION : {} - FONO : {} - CORREO : {} - CARGO : {} - SALARIO : {} - DEPARTAMENTO : {} ".format(dato[0], dato[1], dato[2], dato[3], dato[4], dato[5], dato[6], dato[7], dato[8], dato[9]))
+                print("--------------------------------------------------------------------------------------------------------------------------------------------------------")
+        time.sleep(2)
+        while True:
+            try:
+                opcion = int(input("INGRESE ID DE EMPLEADO AL QUE DESEA REEMPLAZAR : "))
+                datos = DAO.CRUDEmpleado.consultaparticular(opcion)
+                if datos is None:
+                    print(" No hay empleados con ese id ")
+                    continue
+                else:
+                    id_empleado = datos[0]
+                    listanuevos.append(id_empleado)
+                    break
+            except ValueError:
+                print("Ingrese un numero.")
+                time.sleep(2)
+                continue
+    else:
+        listanuevos.append(datos[4])
 
     DAO.CRUDRegistro.editar(listanuevos)
 # Eliminar datos
@@ -302,5 +378,6 @@ def eliminardatos_registros():
             except ValueError:
                 print("Ingrese un numero.")
                 time.sleep(2)
+                continue
             DAO.CRUDRegistro.eliminar(elim)
             break

@@ -5,23 +5,24 @@ class GestionEmpleados():
     def __init__(self):
         self.empleados = DAO.CRUDEmpleado.obtener_todos()
 
-    def __str__(self):  
-        string = '''================================
- MUESTRA DE TODOS LOS EMPLEADOS 
-================================\n'''
-        for dato in self.empleados:            
-            empleado = '''ID : {} - RUN : {} - NOMBRE : {} - APELLIDO : {} - DIRECCION : {} - FONO : {} - CORREO : {} - CARGO : {} - SALARIO : {} - DEPARTAMENTO : {} 
-            --------------------------------------------------------------------------------------------------------------------------------------------------------\n'''.format(dato[0], dato[1], dato[2], dato[3], dato[4], dato[5], dato[6], dato[7], dato[8], dato[9])
-            string += empleado 
-        return string        
-    
-    def agregar_empleado(self):
-        DAO.CRUDEmpleado.agregar(self)
+    def __str__(self):
+        if len(self.empleados) == 0:
+            print("No hay empleados")
+        else:
+            string = '''================================\nMUESTRA DE TODOS LOS EMPLEADOS \n================================\n'''
+            for dato in self.empleados:            
+                empleado = '''ID : {} - RUN : {} - NOMBRE : {} - APELLIDO : {} - DIRECCION : {} - FONO : {} - CORREO : {} - CARGO : {} - SALARIO : {} - DEPARTAMENTO : {} 
+                --------------------------------------------------------------------------------------------------------------------------------------------------------\n'''.format(dato[0], dato[1], dato[2], dato[3], dato[4], dato[5], dato[6], dato[7], dato[8], dato[9])
+                string += empleado 
+            return string        
+        
+    def agregar_empleado(empleado):
+        DAO.CRUDEmpleado.agregar(empleado)
 
     def mostrar_uno():
         while True:
             try:
-                op = int(input("Ingrese valor del ID del empleado que desea Mostrar los Datos : "))
+                op = int(input("Ingrese valor del ID del empleado que desea obtener los Datos : "))
             except ValueError:
                 print("Ingrese un numero.")
                 time.sleep(2)
@@ -44,4 +45,5 @@ class GestionEmpleados():
                 time.sleep(1)
             DAO.CRUDEmpleado.eliminar(eliminar)
             break
+    
     

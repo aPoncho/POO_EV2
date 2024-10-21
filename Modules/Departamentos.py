@@ -1,5 +1,6 @@
 import DAO.CRUDDepartamento
 from DTO.Departamento import Departamento
+from DTO.GestionDepartamento import GestionDepartamentos
 
 import time, os
 
@@ -48,8 +49,8 @@ def ingresar_departamento():
 
     gerente=input("INGRESE NOMBRE GERENTE : ")
 
-    d = Departamento(nombre, ubicacion, gerente)
-    DAO.CRUDDepartamento.agregar(d)
+    depto = Departamento(nombre, ubicacion, gerente)
+    GestionDepartamentos.agregar(depto)
 # Mostrar
 def menumostrar_departamentos():
     while True:
@@ -74,7 +75,7 @@ def menumostrar_departamentos():
         elif op == 2:
             mostraruno_departamento()
         elif op == 3:
-            print("AGREGAR FUNCION!!!!")
+            mostrarparcial_empleados()
         elif op == 4:
             break
         else:
@@ -103,26 +104,31 @@ def mostraruno_departamento():
         print("===============================")
         print("  MUESTRA DE DATOS PARTICULAR  ")
         print("===============================")
-        try:
-            op = int(input("Ingrese valor del ID del departamento que desea Mostrar los Datos : "))
-        except ValueError:
-            print("Ingrese un numero.")
-            time.sleep(2)
-            continue
+        # try:
+        #     op = int(input("Ingrese valor del ID del departamento que desea Mostrar los Datos : "))
+        # except ValueError:
+        #     print("Ingrese un numero.")
+        #     time.sleep(2)
+        #     continue
+        
+        # datos = DAO.CRUDDepartamento.consultaparticular(op)
+
+        GestionDepartamentos.mostrar_uno_test()
+
+       
+        if datos is None:
+            print(" No hay departamentos con ese id ")
+        else:
+            print("\n=========================================")
+            print("     MUESTRA DE DATOS DEL DEPARTAMENTO     ")
+            print("===========================================")
+            print(" ID               : {}".format(datos[0]))
+            print(" NOMBRE           : {}".format(datos[1]))
+            print(" UBICACION        : {}".format(datos[2]))
+            print(" GERENTE          : {}".format(datos[3]))
+            print("=======================================")
+        input("\n\n PRESIONE ENTER PARA CONTINUAR")
         break
-    datos = DAO.CRUDDepartamento.consultaparticular(op)
-    if datos is None:
-        print(" No hay departamentos con ese id ")
-    else:
-        print("\n=========================================")
-        print("     MUESTRA DE DATOS DEL DEPARTAMENTO     ")
-        print("===========================================")
-        print(" ID               : {}".format(datos[0]))
-        print(" NOMBRE           : {}".format(datos[1]))
-        print(" UBICACION        : {}".format(datos[2]))
-        print(" GERENTE          : {}".format(datos[3]))
-        print("=======================================")
-    input("\n\n PRESIONE ENTER PARA CONTINUAR")
 # Modificar datos
 def modificardatos_departamento():
     os.system('cls')
@@ -166,6 +172,59 @@ def modificardatos_departamento():
     DAO.CRUDDepartamento.editar(listanuevos)
 # Eliminar datos
 def eliminardatos_departamento():
+    os.system('cls')
+    print("=============================================")
+    print("        MODULO ELIMINAR DEPARTAMENTOS        ")
+    print("=============================================")
+    datos = DAO.CRUDDepartamento.mostrartodos()
+    dato_em = DAO.CRUDEmpleado.mostrartodos()
+    dato_pr = DAO.CRUDProyecto.mostrartodos()
+    if len(datos) == 0:
+        print("No hay Departamentos en la base de datos ")
+        time.sleep(2)
+        os.system("pause")
+        return
+    mostrartodo_departamento()
+    while True:
+            try:
+                elim = int(input("Ingrese valor de ID del Departamento de tiempo que desea Eliminar : "))
+            except ValueError:
+                print("Ingrese un numero.")
+                time.sleep(2)
+                continue
+            ct_depto_e = DAO.CRUDDepartamento.cantidad_empleados(elim)
+            if ct_depto_e == 0:
+                break
+            else:
+                for dato in dato_em:
+                    print(
+                        " ID : {} - RUN : {} - NOMBRE : {} - APELLIDO : {} - DIRECCION : {} - FONO : {} - CORREO : {} - CARGO : {} - SALARIO : {} - ID DEPARTAMENTO VINCULADO : {} ".format(dato[0], dato[1], dato[2], dato[3], dato[4], dato[5], dato[6], dato[7], dato[8], dato[9]))
+                    print("--------------------------------------------------------------------------------------------------------------------------------------------------------")
+                opm = input("SI ELIMINA ESTE DEPARTAMENTO TAMBIEN ELIMINARA {} EMPLEADOS VINCULADOS A ESTE MISMO, ESTA SEGURO? : [SI/NO] ".format(ct_depto_e))
+                if opm.lower() == "si":
+                    time.sleep(1)
+                    break
+                else:
+                    return
+    while True:
+        ct_depto_p = DAO.CRUDDepartamento.cantidad_proyectos(elim)
+        if ct_depto_p == 0:
+            break
+        else:
+            for dato in dato_pr:
+                print(
+                    " ID : {} - NOMBRE : {} -  FECHA INICIO : {} - DESCRIPCION : {} -  ID DEPARTAMENTO VINCULADO : {}".format(dato[0], dato[1], dato[3], dato[2], dato[4]))
+                print("-----------------------------------------------------------------------------------------------------------------------------------------------------------")
+            opm = input("SI ELIMINA ESTE DEPARTAMENTO TAMBIEN ELIMINARA {} PROYECTOS VINCULADOS A ESTE MISMO, ESTA SEGURO? : [SI/NO] ".format(ct_depto_p))
+            if opm.lower() == "si":
+                eliminar_varios(elim)
+                eliminar_varios_p(elim)
+                time.sleep(1)
+                break
+            else:
+                return
+    DAO.CRUDDepartamento.eliminar(elim)
+
     os.system('cls')
     print("=============================================")
     print("        MODULO ELIMINAR DEPARTAMENTOS        ")

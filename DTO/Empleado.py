@@ -2,6 +2,8 @@ import os
 import time
 import DAO.CRUDEmpleado
 
+
+#se debe implementar clase padre "Persona" para poder usar polimorfismo (quizas en forma de saludo?)
 class Empleado():
 
     def __init__(self, run, nombre, apellido, direccion, fono, correo, cargo, salario, depto):
@@ -17,3 +19,4 @@ class Empleado():
 
     def __str__(self) -> str:
         return f"{self.nombre} {self.apellido}, {self.cargo}"
+    

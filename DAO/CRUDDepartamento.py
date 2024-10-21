@@ -30,6 +30,7 @@ def eliminar(id):
         input("\n \n Departamento Elimindado satisfactoreamente")
     except Exception as i:
         print(i)
+      
 
 
 def editar(d):
@@ -67,4 +68,36 @@ def consultaparticular(id):
         return datos
     except Exception as i:
         con.rollback()
+        print(i)
+
+def cantidad_empleados(id_depto):
+    try:
+        con=Conexion(host, user, password, db)
+        sql= "Select count(ID_empleado) From empleados WHERE Departamento_e={}".format(id_depto)
+        valor = con.ejecuta_query(sql)
+        ct_depto = valor.fetchone()[0]
+        return ct_depto
+    except Exception as i:
+        print(i)
+
+
+def cantidad_proyectos(id_depto):
+    try:
+        con=Conexion(host, user, password, db)
+        sql= "Select count(ID_proyecto) From proyectos WHERE ID_departamento={}".format(id_depto)
+        valor = con.ejecuta_query(sql)
+        ct_depto_p = valor.fetchone()[0]
+        return ct_depto_p
+    except Exception as i:
+        print(i)
+
+
+def elim_empleado_id(id_depto):
+    try:
+        con=Conexion(host, user, password, db)
+        sql= "Delete From empleados WHERE Departamento_e={}".format(ct_depto)
+        con.ejecuta_query(sql)
+        con.commit()
+        input("\n \n Empleados Elimindados satisfactoreamente")
+    except Exception as i:
         print(i)

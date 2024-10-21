@@ -3,6 +3,14 @@ import time, os
 from datetime import date
 from DTO.Proyecto import Proyecto
 
+def eliminar_varios_p(id_depto):
+        datos = [DAO.CRUDProyecto.consulta_dpto(id_depto)]
+        lista_id = []
+        for dato in datos:
+            lista_id.append(dato[0])
+        for id in lista_id:
+            DAO.CRUDProyecto.eliminar(id)
+            
 # ----PROYECTOS----
 def menuproyectos():
     while True:
@@ -104,7 +112,38 @@ def ingresar_proyecto():
 
     fecha_inicio = date(año_int, mes_int, dia_int)
 
-    p = Proyecto(nombre, descripcion, fecha_inicio)
+    print("====================================")
+    print(" MUESTRA DE TODOS LOS DEPARTAMENTOS ")
+    print("====================================")
+    datos = DAO.CRUDDepartamento.mostrartodos()
+    if len(datos) == 0:
+        print("No hay departamentos en la base de datos ")
+        time.sleep(1)
+        print("Volviendo...")
+        time.sleep(2)
+        return
+    else:
+        for dato in datos:
+            print(
+                " ID : {} - NOMBRE : {} - UBICACION: {} - GERENTE : {} ".format(dato[0], dato[1], dato[2], dato[3]))
+            print("--------------------------------------------------------------------------------------------------------------------------------------------------------")
+    time.sleep(2)
+    while True:
+        try:
+            opcion = int(input("INGRESE ID DE DEPARTAMENTO AL QUE DESEA VINCULAR : "))
+            datos = DAO.CRUDDepartamento.consultaparticular(opcion)
+            if datos is None:
+                print(" No hay departamentos con ese id ")
+                continue
+            else:
+                id_departamento = datos[0]
+                break
+        except ValueError:
+            print("Ingrese un numero.")
+            time.sleep(2)
+            continue
+        
+    p = Proyecto(nombre, descripcion, fecha_inicio, id_departamento)
     DAO.CRUDProyecto.agregar(p)
 # Mostrar
 def menumostrar_proyectos():
@@ -148,7 +187,7 @@ def mostrartodo_proyectos():
     else:
         for dato in datos:
             print(
-                " ID : {} - NOMBRE : {} -  FECHA INICIO : {} - DESCRIPCION : {}".format(dato[0], dato[1], dato[3], dato[2]))
+                " ID : {} - NOMBRE : {} -  FECHA INICIO : {} - DESCRIPCION : {} -  ID DEPARTAMENTO VINCULADO : {}".format(dato[0], dato[1], dato[3], dato[2], dato[4]))
             print("-----------------------------------------------------------------------------------------------------------------------------------------------------------")
     time.sleep(2)
     os.system("pause")
@@ -177,6 +216,7 @@ def mostraruno_proyectos():
         print(" NOMBRE           : {}".format(datos[1]))
         print(" FECHA INICIO     : {}".format(datos[3]))
         print(" DESCRIPCION      : {}".format(datos[2]))
+        print(" ID DEPTO VINCULADO  : {}".format(datos[4]))
         print("=======================================")
     input("\n\n PRESIONE ENTER PARA CONTINUAR")
 # Modificar datos
@@ -261,6 +301,42 @@ def modificardatos_proyectos():
         listanuevos.append(fechanueva)
     else: 
         listanuevos.append(datos[3])
+
+    opm = input("DESEA MODIFICAR EL DEPARTAMENTO VINCULADO : {} - [SI/NO] ".format(datos[4]))
+    if opm.lower() == "si":
+        print("====================================")
+        print(" MUESTRA DE TODOS LOS DEPARTAMENTOS ")
+        print("====================================")
+        datos = DAO.CRUDDepartamento.mostrartodos()
+        if len(datos) == 0:
+            print("No hay departamentos en la base de datos ")
+            time.sleep(1)
+            print("Volviendo...")
+            time.sleep(2)
+            return
+        else:
+            for dato in datos:
+                print(
+                    " ID : {} - NOMBRE : {} - UBICACION: {} - GERENTE : {} ".format(dato[0], dato[1], dato[2], dato[3]))
+                print("--------------------------------------------------------------------------------------------------------------------------------------------------------")
+        time.sleep(2)
+        while True:
+            try:
+                opcion = int(input("INGRESE ID DE DEPARTAMENTO AL QUE DESEA REEMPLAZAR : "))
+                datos = DAO.CRUDDepartamento.consultaparticular(opcion)
+                if datos is None:
+                    print(" No hay departamentos con ese id ")
+                    continue
+                else:
+                    id_departamento = datos[0]
+                    listanuevos.append(id_departamento)
+                    break
+            except ValueError:
+                print("Ingrese un numero.")
+                time.sleep(2)
+                continue
+    else: 
+        listanuevos.append(datos[4])
 
     DAO.CRUDProyecto.editar(listanuevos)
 # Eliminar datos
