@@ -1,4 +1,4 @@
-from DAO.Conexion import Conexion
+from my_package.DAO.Conexion import Conexion
 
 
 
@@ -9,10 +9,10 @@ db='empresa'
 
 
 
-def agregar(p):
+def agregar(r):
     try:
         con= Conexion(host, user, password, db)
-        sql= "INSERT INTO proyectos SET Nombre_p='{}', Descripcion_p='{}',Fecha_inicio_p='{}', ID_DEPARTAMENTO={}".format(p.nombre_proyecto,p.descripcion_proyecto,p.fecha_inicio_proyecto,p.id_departamento)
+        sql= "INSERT INTO registro_de_tiempo SET Fecha_r='{}', Cantidad_horas={}, Descripcion_r='{}', ID_EMPLEADO={}".format(r.fecha_registro, r.cantidad_horas, r.descripcion_registro, r.id_empleado)
         con.ejecuta_query(sql)
         con.commit()
         input("\n\n Datos Ingresados Satisfactoreamente")
@@ -24,18 +24,18 @@ def agregar(p):
 def eliminar(id):
     try:
         con=Conexion(host, user, password, db)
-        sql= "DELETE FROM proyectos WHERE ID_proyecto={}".format(id)
+        sql= "DELETE FROM registro_de_tiempo WHERE ID_reg_tiempo={}".format(id)
         con.ejecuta_query(sql)
         con.commit()
-        input("\n \n Proyecto Elimindado satisfactoreamente")
+        input("\n \n Registro de tiempo Elimindado satisfactoreamente")
     except Exception as i:
         print(i)
 
 
-def editar(p):
+def editar(r):
     try:
         con=Conexion(host, user, password, db)
-        sql="UPDATE proyectos SET Nombre_p='{}', Descripcion_p='{}', Fecha_inicio_p={}, ID_DEPARTAMENTO={} WHERE ID_proyecto={} ".format(p[1],p[2],p[3],p[4],p[0])
+        sql="UPDATE registro_de_tiempo SET Fecha_r={}, Cantidad_horas='{}', Descripcion_r='{}', ID_EMPLEADO={} WHERE ID_reg_tiempo={} ".format(r[1],r[2],r[3],r[4],r[0])
         con.ejecuta_query(sql)
         con.commit()
         input("\n \n Datos modificados satisfactoreamente")
@@ -44,10 +44,11 @@ def editar(p):
         print(i)
 
 
-def mostrartodos():
+
+def obtener_todos():
     try:
         con=Conexion(host, user, password, db)
-        sql= "SELECT * FROM proyectos "
+        sql= "SELECT * FROM registro_de_tiempo"
         cursor=con.ejecuta_query(sql)
         datos=cursor.fetchall()
         con.desconectar()
@@ -57,10 +58,10 @@ def mostrartodos():
         print(i)
 
 
-def consultaparticular(id):
+def obtener_uno(id):
     try:
         con=Conexion(host, user, password, db)
-        sql="select * from proyectos where ID_proyecto={}".format(id)
+        sql="select * from registro_de_tiempo where ID_reg_tiempo={}".format(id)
         cursor=con.ejecuta_query(sql)
         datos=cursor.fetchone()
         con.desconectar()
@@ -69,11 +70,11 @@ def consultaparticular(id):
         con.rollback()
         print(i)
 
-    
-def consulta_dpto(id):
+
+def consulta_empleado(id):
     try:
         con=Conexion(host, user, password, db)
-        sql="select * from proyectos where ID_DEPARTAMENTO={}".format(id)
+        sql="select * from registro_de_tiempo where ID_EMPLEADO={}".format(id)
         cursor=con.ejecuta_query(sql)
         datos=cursor.fetchone()
         con.desconectar()

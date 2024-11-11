@@ -1,6 +1,6 @@
 import DAO.CRUDDepartamento
 from DTO.Departamento import Departamento
-from DTO.GestionDepartamento import GestionDepartamentos
+from my_package.DTO.GestionDepartamentos import GestionDepartamentos
 
 import time, os
 
@@ -75,7 +75,7 @@ def menumostrar_departamentos():
         elif op == 2:
             mostraruno_departamento()
         elif op == 3:
-            mostrarparcial_empleados()
+            print("no implementado")
         elif op == 4:
             break
         else:

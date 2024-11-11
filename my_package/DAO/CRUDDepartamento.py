@@ -1,4 +1,4 @@
-from DAO.Conexion import Conexion
+from my_package.DAO.Conexion import Conexion
 
 
 
@@ -58,7 +58,7 @@ def obtener_todos():
         print(i)
 
 
-def consultaparticular(id):
+def obtener_uno(id):
     try:
         con=Conexion(host, user, password, db)
         sql="select * from departamentos where ID_departamento={}".format(id)

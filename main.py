@@ -1,9 +1,10 @@
 import os
 import time
-import Modules.Proyectos
-import Modules.Registros
-import Modules.Departamentos
-import Modules.Empleados
+
+#import my_package.Modules.Proyectos as modulo_proyectos
+#import my_package.Modules.Registros as modulo_registros
+#import my_package.Modules.Departamentos as modulo_departamentos
+import my_package.Modules.Empleados as modulo_empleados
 
 def menuprincipal():
     os.system('cls')
@@ -28,13 +29,13 @@ while (True):
         os.system("cls")
         continue
     if op == 1:
-        Modules.Empleados.menuempleados()
+        modulo_empleados.menuempleados()
     elif op == 2:
-        Modules.Proyectos.menuproyectos()
+        print("No implementado")
     elif op == 3:
-        Modules.Registros.menuregistros()
+        print("No implementado")
     elif op == 4:
-        Modules.Departamentos.menudepartamentos()
+        print("No implementado")
     elif op == 5:
         op2 = input("DESEA SALIR [SI/NO] :")
         if op2.lower() == "si":
