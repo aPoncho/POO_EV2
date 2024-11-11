@@ -1,6 +1,8 @@
 import my_package.DAO.CRUDDepartamento as CRUDDepartamento
 import time
 
+#ESTO DEBE MOVERSE A AL DAO!!!!
+
 class GestionDepartamentos():
     def __init__(self):
         self.departamentos = CRUDDepartamento.obtener_todos()

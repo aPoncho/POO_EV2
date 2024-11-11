@@ -1,5 +1,7 @@
 import my_package.DAO.CRUDRegistro as CRUDRegistro
 
+#ESTO DEBE MOVERSE A AL DAO!!!!
+
 class GestionRegistros():
     def __init__(self):
         self.registros = CRUDRegistro.obtener_todos()
