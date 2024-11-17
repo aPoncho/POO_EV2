@@ -123,9 +123,6 @@ def ingresar_registros():
             else:
                 break
 
-        print("====================================")
-        print("    MUESTRA DE TODOS LOS EMPLEADOS  ")
-        print("====================================")
         datos = GestionEmpleados.obtener_todos()
         empleados = GestionEmpleados(datos)
         print(empleados)
@@ -138,7 +135,6 @@ def ingresar_registros():
                 try:
                     opcion = int(input("INGRESE ID DE EMPLEADO AL QUE DESEA VINCULAR : "))
                     datos = GestionEmpleados.obtener_uno(opcion)
-                    print(datos)
                     if datos is None:
                         print(" No hay empleados con ese id ")
                         continue
