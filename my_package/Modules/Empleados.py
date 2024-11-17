@@ -1,5 +1,5 @@
 from my_package.DAO.CRUDEmpleado import GestionEmpleados
-
+from my_package.DTO.Usuario import Usuario
 from my_package.DTO.Empleado import Empleado
 from my_package.DTO.GestionDepartamentos import GestionDepartamentos
 from my_package.DAO.CRUDDepartamento import obtener_todos
@@ -151,6 +151,9 @@ def ingresardatos_empleados():
             time.sleep(2)
             continue
     e = Empleado(run, nombre, apellido, direccion, fono, correo, cargo, salario, depto)
+    user = Usuario(run, nombre, apellido, direccion, fono, correo, 88, 'contraseña123')
+    print(e)
+    print(user)
     GestionEmpleados.agregar(e)
 
 
@@ -223,11 +226,22 @@ def mostrarparcial_empleados():
     print("=======================================")
     print("   MUESTRA PARCIALMENTE LOS CLIENTES   ")
     print("=======================================")
-    cantidad = int(input("\nIngrese la Cantidad de Empleados a Mostrar : "))
-    datos = GestionEmpleados.consulta_parcial(cantidad)
-    empleados = GestionEmpleados(datos)
-    print(empleados)
-    input("\n\n PRESIONE ENTER PARA CONTINUAR")
+    while True:
+        try:
+            cantidad = int(input("\nIngrese la Cantidad de Empleados a Mostrar : "))
+        except:
+            print("ingrese una cantidad valida")
+            continue
+        if cantidad == 0:
+            print("cantidad no valida, volviendo al menu...")
+            input("\n\n PRESIONE ENTER PARA CONTINUAR")
+            break
+        else:
+            datos = GestionEmpleados.consulta_parcial(cantidad)
+            empleados = GestionEmpleados(datos)
+            print(empleados)
+            input("\n\n PRESIONE ENTER PARA CONTINUAR")
+            break
 
 # Modificar datos (WORKING, falta testeo)
 def modificardatos_empleados():
@@ -387,8 +401,13 @@ def eliminardatos_empleados():
     print("=========================================")
     print("       MODULO ELIMINAR EMPLEADOS         ")
     print("=========================================")
-    mostrartodo_empleados()
+
     while True:
+        datos = GestionEmpleados.obtener_todos()
+        empleados = GestionEmpleados(datos)
+        print(empleados)
+        if empleados == None:
+            break
         try:
             elim = int(input("Ingrese valor de ID del Empleado que desea Eliminar : "))
         except ValueError:
@@ -404,33 +423,33 @@ def eliminardatos_empleados():
             empleado = Empleado(datos[1],datos[2],datos[3],datos[4],datos[5],datos[6],datos[7],datos[8], datos[9], datos[0])
             registros_empleado = GestionRegistros.obtener_por_empleado(elim)
             print(empleado)
-        if registros_empleado == None:
-            print('Este empleado no presenta registros de tiempo')
-            opm = input('ESTA SEGURO QUE DESEA ELIMINAR ESTE EMPLEADO? SI/NO ')
-            if opm.lower() == "si":
-                GestionEmpleados.eliminar(elim)
-                print(f'empleado ID: {empleado.id} eliminado exitosamente')
-                time.sleep(1)
-                break
+            if registros_empleado == None:
+                print('Este empleado no presenta registros de tiempo')
+                opm = input('ESTA SEGURO QUE DESEA ELIMINAR ESTE EMPLEADO? SI/NO ')
+                if opm.lower() == "si":
+                    GestionEmpleados.eliminar(elim)
+                    print(f'empleado ID: {empleado.id} eliminado exitosamente')
+                    time.sleep(1)
+                    break
+                else:
+                    print('Operacion cancelada, volviendo al menu... ')
+                    time.sleep(1)
+                    break
             else:
-                print('Operacion cancelada, volviendo al menu... ')
-                time.sleep(1)
-                break
-        else:
-            for dato in registros_empleado:
-                print(
-                " ID : {} - FECHA : {} - CANTIDAD DE HORAS TRABAJADAS : {} - DESCRIPCION : {} - ID EMPLEADO VINCULADO : {}".format(dato[0], dato[1], dato[2], dato[3], dato[4]))
-                print("--------------------------------------------------------------------------------------------------------------------------------------------------------")
-            opm = input("SI ELIMINA ESTE EMPLEADO TAMBIEN ELIMINARA {} REGISTROS DE TIEMPO VINCULADOS A ESTE MISMO, ESTA SEGURO? : [SI/NO] ".format(registros_empleado))
-            if opm.lower() == "si":
-                GestionEmpleados.eliminar(elim)
-                print(f'empleado ID: {empleado.id} eliminado exitosamente')
-                time.sleep(1)
-                break
-            else:
-                print('Operacion cancelada, volviendo al menu... ')
-                time.sleep(1)
-                break
+                for dato in registros_empleado:
+                    print(
+                    " ID : {} - FECHA : {} - CANTIDAD DE HORAS TRABAJADAS : {} - DESCRIPCION : {} - ID EMPLEADO VINCULADO : {}".format(dato[0], dato[1], dato[2], dato[3], dato[4]))
+                    print("--------------------------------------------------------------------------------------------------------------------------------------------------------")
+                opm = input("SI ELIMINA ESTE EMPLEADO TAMBIEN ELIMINARA {} REGISTROS DE TIEMPO VINCULADOS A ESTE MISMO, ESTA SEGURO? : [SI/NO] ".format(registros_empleado))
+                if opm.lower() == "si":
+                    GestionEmpleados.eliminar(elim)
+                    print(f'empleado ID: {empleado.id} eliminado exitosamente')
+                    time.sleep(1)
+                    break
+                else:
+                    print('Operacion cancelada, volviendo al menu... ')
+                    time.sleep(1)
+                    break
             
 #FALTA TESTEARLO
 def eliminar_varios(id_depto):

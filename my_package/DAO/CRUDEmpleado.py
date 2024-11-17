@@ -13,8 +13,8 @@ class GestionEmpleados():
         self.empleados = empleados
 
     def __str__(self):
-        if self.empleados == None:
-            print("No hay empleados")
+        if len(self.empleados) == 0:
+            return "No hay empleados"
         else:
             string = '''================================\nMUESTRA DE TODOS LOS EMPLEADOS \n================================\n'''
             for dato in self.empleados:            
@@ -33,6 +33,7 @@ class GestionEmpleados():
             con.desconectar()
         except Exception as i:
             print(i)
+            input("presione una tecla...")
         
     def editar(e):
         try:
