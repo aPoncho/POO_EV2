@@ -10,14 +10,15 @@ class Usuario(Persona):
         self.pasword = password
 
     def __str__(self):
-        return f"Usuario: {self.id} Correo: {self.correo}"
+        datos = super().__str__()
+        return f"Usuario: {self.id} \n {datos}"
 
     #Setters and getters para setear y obtener valores de los atributos
     # def setId(self, new_id):
     #     self.__id = new_id
     
-    # def getId(self):
-    #     return self.__id
+    #def getId(self):
+    #    return self.__id
     
     # def setPassword(self, new_password):
     #     self.__pasword = new_password

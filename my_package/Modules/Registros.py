@@ -1,8 +1,10 @@
 import time, os
 from datetime import date
-from  DTO.Registro import Registro
-import DAO.CRUDRegistro
-
+from my_package.DTO.Registro import Registro
+from my_package.DAO.CRUDRegistro import GestionRegistros
+from my_package.DAO.CRUDEmpleado import GestionEmpleados
+from my_package.DTO.Empleado import Empleado
+#fixear para empleado
 def eliminar_varios_r(id_depto):
         datos = [DAO.CRUDRegistro.consulta_dpto(id_depto)]
         lista_id = []
@@ -34,11 +36,11 @@ def menuregistros():
         if op == 1:
             ingresar_registros()
         elif op == 2:
-            menumostrar_registros()
+            print("No implementado")
         elif op == 3:
-            modificardatos_registros()
+            print("No implementado")
         elif op == 4:
-            eliminardatos_registros()
+            print("No implementado")
         elif op == 5:
             break
         else:
@@ -53,106 +55,105 @@ def ingresar_registros():
     print()
     print("--- FECHA REGISTRO ---")
     while True:
-        try:
-            dia=input("INGRESE DIA : ")
-            dia_int = int(dia)
-            if dia_int > 31 or dia == "00" or dia.isdigit() == False:
-                print("Ingrese el dia en 2 digitos")
-                continue
-            elif len(dia) == 2:
-                break
-            else:
-                print("Ingrese el dia en 2 digitos")
-                continue
-        except ValueError:
-            print("Debe ingresar dígitos.")
-    while True:
-        try:
-            mes=input("INGRESE MES : ")
-            mes_int = int(mes)
-            if mes_int > 12 or mes == "00" or mes.isdigit() == False:
-                print("Ingrese el mes en 2 digitos")
-                continue
-            elif len(mes) == 2:
-                break
-            else:
-                print("Ingrese el mes en 2 digitos")
-                continue
-        except ValueError:
-            print("Debe ingresar dígitos.")
-    while True:
-        try:
-            año=input("INGRESE AÑO : ")
-            año_int = int(año)
-            if año_int < 2023 or año == "0000" or año.isdigit() == False:
-                print("Ingrese el año en 4 digitos")
-                continue
-            elif len(año) == 4:
-                break
-            else:
-                print("Ingrese el año en 4 digitos")
-                continue
-        except ValueError:
-            print("Debe ingresar dígitos.")
-        
-    fecha = date(año_int, mes_int, dia_int)
+        while True:
+            try:
+                dia=input("INGRESE DIA : ")
+                dia_int = int(dia)
+                if dia_int > 31 or dia == "00" or dia.isdigit() == False:
+                    print("Ingrese el dia en 2 digitos")
+                    continue
+                elif len(dia) == 2:
+                    break
+                else:
+                    print("Ingrese el dia en 2 digitos")
+                    continue
+            except ValueError:
+                print("Debe ingresar dígitos.")
+        while True:
+            try:
+                mes=input("INGRESE MES : ")
+                mes_int = int(mes)
+                if mes_int > 12 or mes == "00" or mes.isdigit() == False:
+                    print("Ingrese el mes en 2 digitos")
+                    continue
+                elif len(mes) == 2:
+                    break
+                else:
+                    print("Ingrese el mes en 2 digitos")
+                    continue
+            except ValueError:
+                print("Debe ingresar dígitos.")
+        while True:
+            try:
+                año=input("INGRESE AÑO : ")
+                año_int = int(año)
+                if año_int < 2023 or año == "0000" or año.isdigit() == False:
+                    print("Ingrese el año en 4 digitos")
+                    continue
+                elif len(año) == 4:
+                    break
+                else:
+                    print("Ingrese el año en 4 digitos")
+                    continue
+            except ValueError:
+                print("Debe ingresar dígitos.")
+            
+        fecha = date(año_int, mes_int, dia_int)
 
-    while True:
-        try:
-            horas=input("INGRESE HORAS TRABAJADAS : ")
-            horas_int = int(horas)
-            if horas_int > 9 or horas == "00" or horas.isdigit() == False:
-                print("Numero de horas ingresados no es valido")
+        while True:
+            try:
+                horas=input("INGRESE HORAS TRABAJADAS : ")
+                horas_int = int(horas)
+                if horas_int > 9 or horas == "00" or horas.isdigit() == False:
+                    print("Numero de horas ingresados no es valido")
+                    continue
+                elif len(horas) == 1:
+                    break
+                else:
+                    print("Ingrese las horas en 1 digito")
+                    continue
+            except ValueError:
+                print("Debe ingresar dígitos.")
+        while True:
+            descripcion = input("INGRESE DESCRIPCION REGISTRO : ")
+            if len(descripcion) > 300:
+                print("Descripcion muy larga (Max 300 caracteres)")
+                time.sleep(1)
                 continue
-            elif len(horas) == 1:
-                break
             else:
-                print("Ingrese las horas en 1 digito")
-                continue
-        except ValueError:
-            print("Debe ingresar dígitos.")
-    while True:
-        descripcion = input("INGRESE DESCRIPCION REGISTRO : ")
-        if len(descripcion) > 300:
-            print("Descripcion muy larga (Max 300 caracteres)")
-            time.sleep(1)
-            continue
-        else:
-            break
+                break
 
-    print("====================================")
-    print("    MUESTRA DE TODOS LOS EMPLEADOS  ")
-    print("====================================")
-    datos = DAO.CRUDEmpleado.mostrartodos()
-    if len(datos) == 0:
-        print("No hay empleados en la base de datos ")
-        time.sleep(1)
-        print("Volviendo...")
-        time.sleep(2)
-        return
-    else:
-        for dato in datos:
-            print(
-                " ID : {} - RUN : {} - NOMBRE : {} - APELLIDO : {} - DIRECCION : {} - FONO : {} - CORREO : {} - CARGO : {} - SALARIO : {} - DEPARTAMENTO : {} ".format(dato[0], dato[1], dato[2], dato[3], dato[4], dato[5], dato[6], dato[7], dato[8], dato[9]))
-            print("--------------------------------------------------------------------------------------------------------------------------------------------------------")
-    time.sleep(2)
-    while True:
-        try:
-            opcion = int(input("INGRESE ID DE EMPLEADO AL QUE DESEA VINCULAR : "))
-            datos = DAO.CRUDEmpleado.consultaparticular(opcion)
-            if datos is None:
-                print(" No hay empleados con ese id ")
-                continue
-            else:
-                id_empleado = datos[0]
-                break
-        except ValueError:
-            print("Ingrese un numero.")
+        print("====================================")
+        print("    MUESTRA DE TODOS LOS EMPLEADOS  ")
+        print("====================================")
+        datos = GestionEmpleados.obtener_todos()
+        empleados = GestionEmpleados(datos)
+        print(empleados)
+        if datos == None:
+            print("Volviendo...")
             time.sleep(2)
-            continue
+            break
+        else:        
+            while True:
+                try:
+                    opcion = int(input("INGRESE ID DE EMPLEADO AL QUE DESEA VINCULAR : "))
+                    datos = GestionEmpleados.obtener_uno(opcion)
+                    print(datos)
+                    if datos is None:
+                        print(" No hay empleados con ese id ")
+                        continue
+                    else:
+                        empleado = Empleado(datos[1],datos[2],datos[3],datos[4],datos[5],datos[6],datos[7],datos[8], datos[9], datos[0])
+                        id_empleado = empleado.id
+                        break
+                except ValueError:
+                    print("Ingrese un numero.")
+                    time.sleep(2)
+                    continue
 
-    r = Registro(fecha, horas_int, descripcion, id_empleado)
-    DAO.CRUDRegistro.agregar(r)
+            r = Registro(fecha, horas_int, descripcion, id_empleado)
+            GestionRegistros.agregar(r)
+            break
 # Mostrar
 def menumostrar_registros():
     while True:
@@ -200,7 +201,7 @@ def mostrartodo_registros():
     print("================================")
     print(" MUESTRA DE TODOS LOS REGISTROS ")
     print("================================")
-    datos = DAO.CRUDRegistro.mostrartodos()
+    datos = GestionRegistros.obtener_todos()
     if len(datos) == 0:
         print("No hay registros de tiempo en la base de datos ")
     else:
@@ -365,7 +366,7 @@ def eliminardatos_registros():
     print("=========================================")
     print("       MODULO ELIMINAR REGISTROS         ")
     print("=========================================")
-    datos = DAO.CRUDRegistro.mostrartodos()
+    datos = GestionRegistros.obtener_todos()
     if len(datos) == 0:
         print("No hay Registros de tiempo en la base de datos ")
         time.sleep(2)

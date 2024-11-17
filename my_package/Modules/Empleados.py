@@ -3,7 +3,8 @@ from my_package.DTO.Usuario import Usuario
 from my_package.DTO.Empleado import Empleado
 from my_package.DTO.GestionDepartamentos import GestionDepartamentos
 from my_package.DAO.CRUDDepartamento import obtener_todos
-from my_package.DTO.GestionRegistros import GestionRegistros
+from my_package.DAO.CRUDRegistro import GestionRegistros
+from my_package.DTO.Registro import Registro
 import os, time
 from datetime import date
 
@@ -151,9 +152,7 @@ def ingresardatos_empleados():
             time.sleep(2)
             continue
     e = Empleado(run, nombre, apellido, direccion, fono, correo, cargo, salario, depto)
-    user = Usuario(run, nombre, apellido, direccion, fono, correo, 88, 'contraseña123')
     print(e)
-    print(user)
     GestionEmpleados.agregar(e)
 
 
@@ -421,9 +420,10 @@ def eliminardatos_empleados():
             break
         else:
             empleado = Empleado(datos[1],datos[2],datos[3],datos[4],datos[5],datos[6],datos[7],datos[8], datos[9], datos[0])
-            registros_empleado = GestionRegistros.obtener_por_empleado(elim)
+            registros_empleado = GestionRegistros.consulta_empleado(elim)
+            cantidad_registros = GestionRegistros.consulta_cantidad(elim)
             print(empleado)
-            if registros_empleado == None:
+            if cantidad_registros[0] == 0:
                 print('Este empleado no presenta registros de tiempo')
                 opm = input('ESTA SEGURO QUE DESEA ELIMINAR ESTE EMPLEADO? SI/NO ')
                 if opm.lower() == "si":
@@ -437,11 +437,12 @@ def eliminardatos_empleados():
                     break
             else:
                 for dato in registros_empleado:
-                    print(
-                    " ID : {} - FECHA : {} - CANTIDAD DE HORAS TRABAJADAS : {} - DESCRIPCION : {} - ID EMPLEADO VINCULADO : {}".format(dato[0], dato[1], dato[2], dato[3], dato[4]))
+                    registro = Registro(dato[1], dato[2], dato[3], dato[4], dato[0])
+                    print(registro)
                     print("--------------------------------------------------------------------------------------------------------------------------------------------------------")
-                opm = input("SI ELIMINA ESTE EMPLEADO TAMBIEN ELIMINARA {} REGISTROS DE TIEMPO VINCULADOS A ESTE MISMO, ESTA SEGURO? : [SI/NO] ".format(registros_empleado))
+                opm = input("SI ELIMINA ESTE EMPLEADO TAMBIEN ELIMINARA {} REGISTROS DE TIEMPO VINCULADOS A ESTE MISMO, ESTA SEGURO? : [SI/NO] ".format(cantidad_registros[0]))
                 if opm.lower() == "si":
+                    GestionRegistros.eliminar_registro_empleado(elim)
                     GestionEmpleados.eliminar(elim)
                     print(f'empleado ID: {empleado.id} eliminado exitosamente')
                     time.sleep(1)

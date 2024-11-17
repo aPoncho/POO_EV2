@@ -14,7 +14,7 @@ class GestionEmpleados():
 
     def __str__(self):
         if len(self.empleados) == 0:
-            return "No hay empleados"
+            return "No hay empleados en la base de datos"
         else:
             string = '''================================\nMUESTRA DE TODOS LOS EMPLEADOS \n================================\n'''
             for dato in self.empleados:            

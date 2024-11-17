@@ -10,19 +10,15 @@ class Empleado(Persona):
         self.id = id
 
     def __str__(self):
-        
+        datos = super().__str__()
         return f'''
 =====================================
    MUESTRA DE DATOS DEL EMPLEADO     
 ======================================
 ID               : {self.id}
-RUN              : {self.run}
-NOMBRE           : {self.nombre}
-APELLIDO         : {self.apellido}
-DIRECCION        : {self.direccion}
-FONO             : {self.fono}
-CORREO           : {self.correo}
+{datos}
 CARGO            : {self.cargo}
 SALARIO          : {self.salario}
 ID DEPTO VINCULADO  : {self.depto}
 ======================================='''
+

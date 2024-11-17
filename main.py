@@ -2,7 +2,7 @@ import os
 import time
 
 #import my_package.Modules.Proyectos as modulo_proyectos
-#import my_package.Modules.Registros as modulo_registros
+import my_package.Modules.Registros as modulo_registros
 #import my_package.Modules.Departamentos as modulo_departamentos
 import my_package.Modules.Empleados as modulo_empleados
 
@@ -33,7 +33,7 @@ while (True):
     elif op == 2:
         print("No implementado")
     elif op == 3:
-        print("No implementado")
+        modulo_registros.menuregistros()
     elif op == 4:
         print("No implementado")
     elif op == 5:

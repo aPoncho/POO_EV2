@@ -1,8 +1,6 @@
-#clase de prueba aun no implementada
-#clase padre, usuario y empleado heredaran de esta
 class Persona():
     def __init__(self, run, nombre, apellido, direccion, fono, correo):
-        #atributos que quizas deban ser "protected (_atributo)"
+        #atributos que quizas deberian ser "protected (_atributo)"
         self.run = run
         self.nombre = nombre
         self.apellido = apellido
@@ -10,4 +8,10 @@ class Persona():
         self.fono = fono
         self.correo = correo
 
- 
+    def __str__(self):
+        return f'''RUN              : {self.run}
+NOMBRE           : {self.nombre}
+APELLIDO         : {self.apellido}
+DIRECCION        : {self.direccion}
+FONO             : {self.fono}
+CORREO           : {self.correo}'''
