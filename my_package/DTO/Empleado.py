@@ -1,5 +1,4 @@
 from my_package.DTO.Persona import Persona
-#se debe implementar clase padre "Persona" para poder usar polimorfismo (quizas en forma de saludo?)
 class Empleado(Persona):
 
     def __init__(self, run, nombre, apellido, direccion, fono, correo, cargo, salario, depto, id = 'NO ID'):

@@ -1,8 +1,7 @@
 from my_package.DAO.CRUDEmpleado import GestionEmpleados
 from my_package.DTO.Usuario import Usuario
 from my_package.DTO.Empleado import Empleado
-from my_package.DTO.GestionDepartamentos import GestionDepartamentos
-from my_package.DAO.CRUDDepartamento import obtener_todos
+from my_package.DAO.CRUDDepartamento import GestionDepartamentos
 from my_package.DAO.CRUDRegistro import GestionRegistros
 from my_package.DTO.Registro import Registro
 import os, time
@@ -124,7 +123,7 @@ def ingresardatos_empleados():
     print("====================================")
     print(" MUESTRA DE TODOS LOS DEPARTAMENTOS ")
     print("====================================")
-    datos = obtener_todos()
+    datos = GestionDepartamentos.obtener_todos()
     if len(datos) == 0:
         print("No hay departamentos en la base de datos ")
         time.sleep(1)
@@ -140,7 +139,7 @@ def ingresardatos_empleados():
     while True:
         try:
             opcion = int(input("INGRESE ID DE DEPARTAMENTO AL QUE DESEA VINCULAR: "))
-            datos = GestionDepartamentos.mostrar_uno(opcion)
+            datos = GestionDepartamentos.obtener_uno(opcion)
             if datos is None:
                 print(" No hay departamentos con ese id ")
                 continue
