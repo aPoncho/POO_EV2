@@ -1,6 +1,5 @@
-import DAO.CRUDDepartamento
-from DTO.Departamento import Departamento
-from my_package.DTO.GestionDepartamentos import GestionDepartamentos
+from my_package.DTO.Departamento import Departamento
+from my_package.DAO.CRUDDepartamento import GestionDepartamentos
 
 import time, os
 
@@ -29,9 +28,11 @@ def menudepartamentos():
         elif op == 2:
             menumostrar_departamentos()
         elif op == 3:
-            modificardatos_departamento()
+            input("No implementado")
+            #modificardatos_departamento()
         elif op == 4:
-            eliminardatos_departamento()
+            input("No implementado")
+            #eliminardatos_departamento()
         elif op == 5:
             break
         else:
@@ -43,11 +44,24 @@ def ingresar_departamento():
     print("===============================")
     print("     INGRESAR DEPARTAMENTO     ")
     print("===============================")
-    nombre = input("INGRESE NOMBRE DEL DEPARTAMENTO : ")
-
-    ubicacion = input("INGRESE UBICACION DEPARTAMENTO : ") # Podrian agregarse validaciones
-
-    gerente=input("INGRESE NOMBRE GERENTE : ")
+    while True:
+        nombre = input("INGRESE NOMBRE DEL DEPARTAMENTO : ")
+        if len(nombre) <= 50:
+            break
+        else:
+            print("Nombre de departamento demasiado largo")
+    while True:
+        ubicacion = input("INGRESE UBICACION DEPARTAMENTO : ") # Podrian agregarse validaciones
+        if len(ubicacion) <= 50:
+            break
+        else:
+            print("ubicacion demasiado larga")
+    while True:
+        gerente = input("INGRESE NOMBRE GERENTE : ")
+        if len(gerente) <= 50:
+            break
+        else:
+            print("nombre de gerente demasiado largo")
 
     depto = Departamento(nombre, ubicacion, gerente)
     GestionDepartamentos.agregar(depto)
@@ -75,7 +89,7 @@ def menumostrar_departamentos():
         elif op == 2:
             mostraruno_departamento()
         elif op == 3:
-            print("no implementado")
+            mostrar_parcial()
         elif op == 4:
             break
         else:
@@ -87,14 +101,9 @@ def mostrartodo_departamento():
     print("====================================")
     print(" MUESTRA DE TODOS LOS DEPARTAMENTOS ")
     print("====================================")
-    datos = DAO.CRUDDepartamento.mostrartodos()
-    if len(datos) == 0:
-        print("No hay departamentos en la base de datos ")
-    else:
-        for dato in datos:
-            print(
-                " ID : {} - NOMBRE : {} - UBICACION: {} - GERENTE : {} ".format(dato[0], dato[1], dato[2], dato[3]))
-            print("--------------------------------------------------------------------------------------------------------------------------------------------------------")
+    datos = GestionDepartamentos.obtener_todos()
+    departamentos = GestionDepartamentos(datos)
+    print(departamentos)
     time.sleep(2)
     os.system("pause")
 
@@ -104,31 +113,41 @@ def mostraruno_departamento():
         print("===============================")
         print("  MUESTRA DE DATOS PARTICULAR  ")
         print("===============================")
-        # try:
-        #     op = int(input("Ingrese valor del ID del departamento que desea Mostrar los Datos : "))
-        # except ValueError:
-        #     print("Ingrese un numero.")
-        #     time.sleep(2)
-        #     continue
-        
-        # datos = DAO.CRUDDepartamento.consultaparticular(op)
-
-        GestionDepartamentos.mostrar_uno_test()
-
-       
-        if datos is None:
-            print(" No hay departamentos con ese id ")
-        else:
+        try:
+            op = int(input("Ingrese valor del ID del departamento que desea Mostrar los Datos : "))
+        except ValueError:
+            print("Ingrese un numero.")
+            time.sleep(2)
+            continue
+        try:
+            datos = GestionDepartamentos.obtener_uno(op)
+            depto = Departamento(datos[1], datos[2], datos[3], datos[0])
             print("\n=========================================")
             print("     MUESTRA DE DATOS DEL DEPARTAMENTO     ")
             print("===========================================")
-            print(" ID               : {}".format(datos[0]))
-            print(" NOMBRE           : {}".format(datos[1]))
-            print(" UBICACION        : {}".format(datos[2]))
-            print(" GERENTE          : {}".format(datos[3]))
-            print("=======================================")
-        input("\n\n PRESIONE ENTER PARA CONTINUAR")
+            print(depto)
+            input("\n\n PRESIONE ENTER PARA CONTINUAR")
+        except:
+            input("No existe un departamento con este id, presione una tecla para volver")           
         break
+def mostrar_parcial():
+    os.system('cls')
+    while True:
+        try:
+            op = int(input("ingrese cantidad a mostrar: "))
+            break
+        except ValueError:
+            print("Id no valido")
+
+    print("====================================")
+    print(" MUESTRA PARCIAL DE LOS DEPARTAMENTOS ")
+    print("====================================")
+    datos = GestionDepartamentos.consulta_parcial(op)
+    departamentos = GestionDepartamentos(datos)
+    print(departamentos)
+    time.sleep(2)
+    os.system("pause")
+
 # Modificar datos
 def modificardatos_departamento():
     os.system('cls')

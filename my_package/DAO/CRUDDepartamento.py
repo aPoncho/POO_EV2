@@ -12,6 +12,16 @@ class GestionDepartamentos():
     def __init__(self, departamentos):
         self.departamentos = departamentos
 
+    def __str__(self):
+        if self.departamentos == None:
+            return "No hay empleados en la base de datos"
+        else:
+            string = '''================================\nMUESTRA DE TODOS LOS DEPARTAMENTOS \n================================\n'''
+            for dato in self.departamentos:
+                depto = " ID : {} - NOMBRE : {} - UBICACION: {} - GERENTE : {} \n\n".format(dato[0], dato[1], dato[2], dato[3])
+                string += depto
+            return string
+        
     def agregar(d):
         try:
             con= Conexion(host, user, password, db)
@@ -73,6 +83,18 @@ class GestionDepartamentos():
             con.rollback()
             print(i)
 
+    def consulta_parcial(cant):
+        try:
+            con=Conexion(host, user, password, db)
+            sql="select * from departamentos"
+            cursor= con.ejecuta_query(sql)
+            datos=cursor.fetchmany(cant)
+            con.desconectar()
+            return datos
+        except Exception as i:
+            con.rollback()
+            print(i)
+
     def cantidad_empleados(id_depto):
         try:
             con=Conexion(host, user, password, db)
@@ -95,10 +117,10 @@ class GestionDepartamentos():
             print(i)
 
 
-    def elim_empleado_id(id_depto):
+    def elim_depto_empleado(id_empleado):
         try:
             con=Conexion(host, user, password, db)
-            sql= "Delete From empleados WHERE Departamento_e={}".format(ct_depto)
+            sql= "Delete From departamentos WHERE Departamento_e={}".format(id_empleado)
             con.ejecuta_query(sql)
             con.commit()
             input("\n \n Empleados Elimindados satisfactoreamente")

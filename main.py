@@ -3,7 +3,7 @@ import time
 
 #import my_package.Modules.Proyectos as modulo_proyectos
 import my_package.Modules.Registros as modulo_registros
-#import my_package.Modules.Departamentos as modulo_departamentos
+import my_package.Modules.Departamentos as modulo_departamentos
 import my_package.Modules.Empleados as modulo_empleados
 
 def menuprincipal():
@@ -35,7 +35,7 @@ while (True):
     elif op == 3:
         modulo_registros.menuregistros()
     elif op == 4:
-        print("No implementado")
+        modulo_departamentos.menudepartamentos()
     elif op == 5:
         op2 = input("DESEA SALIR [SI/NO] :")
         if op2.lower() == "si":

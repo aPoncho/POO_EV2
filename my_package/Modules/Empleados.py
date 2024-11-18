@@ -48,7 +48,7 @@ def ingresardatos_empleados():
     print("    INGRESAR DATOS EMPLEADO    ")
     print("===============================")
     while True:
-        run = input("INGRESE RUN : ")
+        run = input("INGRESE RUN (remplace 'K' por un '1'): ")
         if len(run) != 9 or not run.isdigit():
             print("El RUN debe ser 9 dígitos.")
             time.sleep(1)
@@ -114,8 +114,10 @@ def ingresardatos_empleados():
     while True:
         try:
             salario = int(input("INGRESE SALARIO : "))
+            if salario == 0:
+                raise ValueError
         except ValueError:
-            print("Por favor ingrese un numero")
+            print("Por favor ingrese un valor valido")
             time.sleep(2)
             continue
         else:
@@ -244,154 +246,171 @@ def mostrarparcial_empleados():
 # Modificar datos (WORKING, falta testeo)
 def modificardatos_empleados():
     os.system('cls')
-    listanuevos = []
-    print("========================================")
-    print("       MODULO MODIFICAR EMPLEADOS       ")
-    print("========================================")
-    datos = GestionEmpleados.obtener_todos()
-    empleados = GestionEmpleados(datos)
-    if empleados == None:
-        print("No hay empleados en la base de datos ")
-        time.sleep(2)
-    else:
-        print(empleados)
-        id = int(input("Ingrese valor de ID del Empleado que desea Modificar: "))
-        datos = GestionEmpleados.obtener_uno(id)
-        empleado = Empleado(datos[0],datos[1],datos[2],datos[3],datos[4],datos[5],datos[6],datos[7],datos[8])
-        print(empleado)
-
-        #mejorable??
-        print("\n ID         : {}".format(datos[0]))
-        listanuevos.append(datos[0])
-        print("\n RUN        : {}".format(datos[1]))
-        listanuevos.append(datos[1])
-
-        opm = input("DESEA MODIFICAR EL NOMBRE : {} - [SI/NO] ".format(datos[2]))
-        if opm.lower() == "si":
-            while True:
-                nombre_nuevo=input("INGRESE NOMBRE : ")
-                if not nombre_nuevo.isalpha():
-                    print("Debe ingresar un nombre válido.")
-                    continue
-                else:
-                    listanuevos.append(nombre_nuevo)
-                    break
-        else:
-            listanuevos.append(datos[2])
-
-        opm = input("DESEA MODIFICAR EL APELLIDO : {} - [SI/NO] ".format(datos[3]))
-        if opm.lower() == "si":
-            while True:
-                apellido_nuevo= input("INGRESE APELLIDO : ")
-                if not apellido_nuevo.isalpha():
-                    print("Debe ingresar un apellido válido.")
-                    continue
-                else:
-                    listanuevos.append(apellido_nuevo)
-                    break
-        else:
-            listanuevos.append(datos[3])
-
-        opm = input("DESEA MODIFICAR LA DIRECCION : {} - [SI/NO] ".format(datos[4]))
-        if opm.lower() == "si":
-            while True: 
-                direc_nuevo = input("INGRESE DIRECCION : ")
-                if "#" in direc_nuevo:
-                    listanuevos.append(direc_nuevo)
-                    break
-                else:
-                    print('Debe ingresar la dirección con el formato "Nombre Calle, #Número"')
-                    continue                
-        else:
-            listanuevos.append(datos[4])
-
-        opm = input("DESEA MODIFICAR EL TELEFONO : {} - [SI/NO] ".format(datos[5]))
-        if opm.lower() == "si":
-            while True: 
-                try:
-                    fono_nuevo= int(input("INGRESE TELEFONO : "))
-                except ValueError:
-                    print("Debe ingresar dígitos.")
-                    continue
-                fono_nuevo_str = str(fono_nuevo)
-                if len(fono_nuevo_str) != 11:
-                        print("El télefono ingresado debe tener 11 dígitos.")
-                        continue
-                else:
-                    listanuevos.append(fono_nuevo)
-        else:
-            listanuevos.append(datos[5])
-
-        opm = input("DESEA MODIFICAR EL CORREO : {} - [SI/NO] ".format(datos[6]))
-        if opm.lower() == "si":
-            while True: 
-                correo_nuevo = input("INGRESE EL CORREO : ")
-                if not correo_nuevo.endswith("@gmail.com"):
-                    print('Debe ingresar un correo válido, usando el formato "@gmail.com"')
-                    continue
-                else:
-                    listanuevos.append(correo_nuevo)
-                    break
-        else:
-            listanuevos.append(datos[6])
-
-        opm = input("DESEA MODIFICAR EL CARGO : {} - [SI/NO] ".format(datos[7]))
-        if opm.lower() == "si":
-            cargo_nuevo=input("INGRESE CARGO : ")
-            listanuevos.append(cargo_nuevo)
-        else:
-            listanuevos.append(datos[7])
-
-        opm = input("DESEA MODIFICAR EL MONTO DE SALARIO : {} - [SI/NO] ".format(datos[8]))
-        if opm.lower() == "si":
-                while True: 
-                    salario_nuevo= input("INGRESE MONTO DE SALARIO : ")
-                    try:
-                        salario_nuevo_int = int(salario_nuevo)
-                    except ValueError:
-                        print("Debe ingresar un valor válido.")
-                        continue
-                    break        
-                listanuevos.append(salario_nuevo_int)
-        else:
-            listanuevos.append(datos[8])
-
-
-        opm = input("DESEA MODIFICAR EL DEPARTAMENTO : {} - [SI/NO] ".format(datos[9]))
-        if opm.lower() == "si":
-            print("====================================")
-            print(" MUESTRA DE TODOS LOS DEPARTAMENTOS ")
-            print("====================================")
-            datos = GestionDepartamentos()
-            if datos == None:
-                print("No hay departamentos en la base de datos ")
-                time.sleep(1)
-                print("Volviendo...")
-                time.sleep(2)
-                return
-            else:
-                print(datos)
+    while True:
+        listanuevos = []
+        print("========================================")
+        print("       MODULO MODIFICAR EMPLEADOS       ")
+        print("========================================")
+        datos = GestionEmpleados.obtener_todos()
+        if len(datos) == 0:
+            print("No hay empleados en la base de datos ")
             time.sleep(2)
+            break
+        else:
+            empleados = GestionEmpleados(datos)
+            print(empleados)
             while True:
                 try:
-                    opcion = int(input("INGRESE ID DE DEPARTAMENTO AL QUE DESEA REEMPLAZAR : "))
-                    datos = GestionDepartamentos.mostrar_uno(opcion)
-                    if datos is None:
-                        print(" No hay departamentos con ese id ")
-                        continue
-                    else:
-                        depto = datos[0]
-                        listanuevos.append(depto)
-                        break
-                except ValueError:
-                    print("Ingrese un numero.")
-                    time.sleep(2)
-                    continue
-        else:
-            listanuevos.append(datos[9])
+                    id = int(input("Ingrese valor de ID del Empleado que desea Modificar: "))
+                    break
+                except:
+                    print("id no valida")
+                    continue 
+                        
+            datos = GestionEmpleados.obtener_uno(id)
+            if datos == None:
+                input("no existe este empleado")
+            else:    
+                empleado = Empleado(datos[0],datos[1],datos[2],datos[3],datos[4],datos[5],datos[6],datos[7],datos[8])
+                print(empleado)
 
-        GestionEmpleados.editar_empleado(listanuevos)
-        time.sleep(2)
+                #mejorable??
+                print("\n ID         : {}".format(datos[0]))
+                listanuevos.append(datos[0])
+                print("\n RUN        : {}".format(datos[1]))
+                listanuevos.append(datos[1])
+
+                opm = input("DESEA MODIFICAR EL NOMBRE : {} - [SI/NO] ".format(datos[2]))
+                if opm.lower() == "si":
+                    while True:
+                        nombre_nuevo=input("INGRESE NOMBRE : ")
+                        if not nombre_nuevo.isalpha():
+                            print("Debe ingresar un nombre válido.")
+                            continue
+                        else:
+                            listanuevos.append(nombre_nuevo)
+                            break
+                else:
+                    listanuevos.append(datos[2])
+
+                opm = input("DESEA MODIFICAR EL APELLIDO : {} - [SI/NO] ".format(datos[3]))
+                if opm.lower() == "si":
+                    while True:
+                        apellido_nuevo= input("INGRESE APELLIDO : ")
+                        if not apellido_nuevo.isalpha():
+                            print("Debe ingresar un apellido válido.")
+                            continue
+                        else:
+                            listanuevos.append(apellido_nuevo)
+                            break
+                else:
+                    listanuevos.append(datos[3])
+
+                opm = input("DESEA MODIFICAR LA DIRECCION : {} - [SI/NO] ".format(datos[4]))
+                if opm.lower() == "si":
+                    while True: 
+                        direc_nuevo = input("INGRESE DIRECCION : ")
+                        if "#" in direc_nuevo:
+                            listanuevos.append(direc_nuevo)
+                            break
+                        else:
+                            print('Debe ingresar la dirección con el formato "Nombre Calle, #Número"')
+                            continue                
+                else:
+                    listanuevos.append(datos[4])
+
+                opm = input("DESEA MODIFICAR EL TELEFONO : {} - [SI/NO] ".format(datos[5]))
+                if opm.lower() == "si":
+                    while True: 
+                        try:
+                            fono_nuevo= int(input("INGRESE TELEFONO : "))
+                        except ValueError:
+                            print("Debe ingresar dígitos.")
+                            continue
+                        fono_nuevo_str = str(fono_nuevo)
+                        if len(fono_nuevo_str) != 11:
+                                print("El télefono ingresado debe tener 11 dígitos.")
+                                continue
+                        else:
+                            listanuevos.append(fono_nuevo)
+                            break
+                else:
+                    listanuevos.append(datos[5])
+
+                opm = input("DESEA MODIFICAR EL CORREO : {} - [SI/NO] ".format(datos[6]))
+                if opm.lower() == "si":
+                    while True: 
+                        correo_nuevo = input("INGRESE EL CORREO : ")
+                        if not correo_nuevo.endswith("@gmail.com"):
+                            print('Debe ingresar un correo válido, usando el formato "@gmail.com"')
+                            continue
+                        else:
+                            listanuevos.append(correo_nuevo)
+                            break
+                else:
+                    listanuevos.append(datos[6])
+
+                opm = input("DESEA MODIFICAR EL CARGO : {} - [SI/NO] ".format(datos[7]))
+                if opm.lower() == "si":
+                    cargo_nuevo=input("INGRESE CARGO : ")
+                    listanuevos.append(cargo_nuevo)
+                else:
+                    listanuevos.append(datos[7])
+
+                opm = input("DESEA MODIFICAR EL MONTO DE SALARIO : {} - [SI/NO] ".format(datos[8]))
+                if opm.lower() == "si":
+                        while True: 
+                            salario_nuevo= input("INGRESE MONTO DE SALARIO : ")
+                            try:
+                                salario_nuevo_int = int(salario_nuevo)
+                                if salario_nuevo_int == 0:
+                                    raise ValueError
+                            except ValueError:
+                                print("Debe ingresar un valor válido.")
+                                continue
+                            break        
+                        listanuevos.append(salario_nuevo_int)
+                else:
+                    listanuevos.append(datos[8])
+
+
+                opm = input("DESEA MODIFICAR EL DEPARTAMENTO : {} - [SI/NO] ".format(datos[9]))
+                if opm.lower() == "si":
+                    print("====================================")
+                    print(" MUESTRA DE TODOS LOS DEPARTAMENTOS ")
+                    print("====================================")
+                    datos = GestionDepartamentos.obtener_todos()
+                    if datos == None:
+                        print("No hay departamentos en la base de datos ")
+                        time.sleep(1)
+                        print("Volviendo...")
+                        time.sleep(2)
+                        return
+                    else:
+                        departamentos = GestionDepartamentos(datos)
+                        print(departamentos)
+                    time.sleep(2)
+                    while True:
+                        try:
+                            opcion = int(input("INGRESE ID DE DEPARTAMENTO AL QUE DESEA REEMPLAZAR : "))
+                            datos = GestionDepartamentos.obtener_uno(opcion)
+                            if datos is None:
+                                print(" No hay departamentos con ese id ")
+                                continue
+                            else:
+                                depto = datos[0]
+                                listanuevos.append(depto)
+                                break
+                        except ValueError:
+                            print("Ingrese un numero.")
+                            time.sleep(2)
+                            continue
+                else:
+                    listanuevos.append(datos[9])
+
+                GestionEmpleados.editar(listanuevos)
+                time.sleep(2)
+                break
 
 #WORKING (revisar el tema de resgistros, tanto foranea en bd como uso de la clase)
 def eliminardatos_empleados():
@@ -402,54 +421,56 @@ def eliminardatos_empleados():
 
     while True:
         datos = GestionEmpleados.obtener_todos()
-        empleados = GestionEmpleados(datos)
-        print(empleados)
-        if empleados == None:
-            break
-        try:
-            elim = int(input("Ingrese valor de ID del Empleado que desea Eliminar : "))
-        except ValueError:
-            print("Ingrese un numero.")
-            time.sleep(2)
-            continue
-        datos = GestionEmpleados.obtener_uno(elim)
-        if datos == None:
-            print(" No hay empleados con ese id ")
-            print('Volviendo al menu...')           
+        if len(datos) == 0:
+            input("no existen empleados en la base")
             break
         else:
-            empleado = Empleado(datos[1],datos[2],datos[3],datos[4],datos[5],datos[6],datos[7],datos[8], datos[9], datos[0])
-            registros_empleado = GestionRegistros.consulta_empleado(elim)
-            cantidad_registros = GestionRegistros.consulta_cantidad(elim)
-            print(empleado)
-            if cantidad_registros[0] == 0:
-                print('Este empleado no presenta registros de tiempo')
-                opm = input('ESTA SEGURO QUE DESEA ELIMINAR ESTE EMPLEADO? SI/NO ')
-                if opm.lower() == "si":
-                    GestionEmpleados.eliminar(elim)
-                    print(f'empleado ID: {empleado.id} eliminado exitosamente')
-                    time.sleep(1)
-                    break
-                else:
-                    print('Operacion cancelada, volviendo al menu... ')
-                    time.sleep(1)
-                    break
+            try:
+                empleados = GestionEmpleados(datos)
+                print(empleados)
+                elim = int(input("Ingrese valor de ID del Empleado que desea Eliminar : "))
+            except ValueError:
+                print("Ingrese un numero.")
+                time.sleep(2)
+                continue
+            datos = GestionEmpleados.obtener_uno(elim)
+            if datos == None:
+                print(" No hay empleados con ese id ")
+                print('Volviendo al menu...')           
+                break
             else:
-                for dato in registros_empleado:
-                    registro = Registro(dato[1], dato[2], dato[3], dato[4], dato[0])
-                    print(registro)
-                    print("--------------------------------------------------------------------------------------------------------------------------------------------------------")
-                opm = input("SI ELIMINA ESTE EMPLEADO TAMBIEN ELIMINARA {} REGISTROS DE TIEMPO VINCULADOS A ESTE MISMO, ESTA SEGURO? : [SI/NO] ".format(cantidad_registros[0]))
-                if opm.lower() == "si":
-                    GestionRegistros.eliminar_registro_empleado(elim)
-                    GestionEmpleados.eliminar(elim)
-                    print(f'empleado ID: {empleado.id} eliminado exitosamente')
-                    time.sleep(1)
-                    break
+                empleado = Empleado(datos[1],datos[2],datos[3],datos[4],datos[5],datos[6],datos[7],datos[8], datos[9], datos[0])
+                registros_empleado = GestionRegistros.consulta_empleado(elim)
+                cantidad_registros = GestionRegistros.consulta_cantidad(elim)
+                print(empleado)
+                if cantidad_registros[0] == 0:
+                    print('Este empleado no presenta registros de tiempo')
+                    opm = input('ESTA SEGURO QUE DESEA ELIMINAR ESTE EMPLEADO? SI/NO ')
+                    if opm.lower() == "si":
+                        GestionEmpleados.eliminar(elim)
+                        print(f'empleado ID: {empleado.id} eliminado exitosamente')
+                        time.sleep(1)
+                        break
+                    else:
+                        print('Operacion cancelada, volviendo al menu... ')
+                        time.sleep(1)
+                        break
                 else:
-                    print('Operacion cancelada, volviendo al menu... ')
-                    time.sleep(1)
-                    break
+                    for dato in registros_empleado:
+                        registro = Registro(dato[1], dato[2], dato[3], dato[4], dato[0])
+                        print(registro)
+                        print("--------------------------------------------------------------------------------------------------------------------------------------------------------")
+                    opm = input("SI ELIMINA ESTE EMPLEADO TAMBIEN ELIMINARA {} REGISTROS DE TIEMPO VINCULADOS A ESTE MISMO, ESTA SEGURO? : [SI/NO] ".format(cantidad_registros[0]))
+                    if opm.lower() == "si":
+                        GestionRegistros.eliminar_registro_empleado(elim)
+                        GestionEmpleados.eliminar(elim)
+                        print(f'empleado ID: {empleado.id} eliminado exitosamente')
+                        time.sleep(1)
+                        break
+                    else:
+                        print('Operacion cancelada, volviendo al menu... ')
+                        time.sleep(1)
+                        break
             
 #FALTA TESTEARLO
 def eliminar_varios(id_depto):

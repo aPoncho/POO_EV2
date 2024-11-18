@@ -4,14 +4,6 @@ from my_package.DTO.Registro import Registro
 from my_package.DAO.CRUDRegistro import GestionRegistros
 from my_package.DAO.CRUDEmpleado import GestionEmpleados
 from my_package.DTO.Empleado import Empleado
-#fixear para empleado
-def eliminar_varios_r(id_depto):
-        datos = [DAO.CRUDRegistro.consulta_dpto(id_depto)]
-        lista_id = []
-        for dato in datos:
-            lista_id.append(dato[0])
-        for id in lista_id:
-            DAO.CRUDRegistro.eliminar(id)
             
 # ----REGISTROS----
 def menuregistros():
@@ -36,11 +28,11 @@ def menuregistros():
         if op == 1:
             ingresar_registros()
         elif op == 2:
-            print("No implementado")
+            input("No implementado")
         elif op == 3:
-            print("No implementado")
+            input("No implementado")
         elif op == 4:
-            print("No implementado")
+            input("No implementado")
         elif op == 5:
             break
         else:
