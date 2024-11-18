@@ -1,7 +1,6 @@
 from my_package.DAO.Conexion import Conexion
 
 
-
 host='localhost'
 user='userempresa'
 password='V3ntana.13'
@@ -11,6 +10,16 @@ db='empresa'
 class GestionRegistros():
     def __init__(self, registros):
         self.registros = registros
+    
+    def __str__(self):
+        if len(self.registros) == 0:
+            return "No hay registros asociados"
+        else:
+            string = '''================================\nMUESTRA DE TODOS LOS REGISTROS \n================================\n'''
+            for dato in self.registros:
+                registro = " ID : {} - FECHA : {} - CANTIDAD DE HORAS TRABAJADAS : {} - DESCRIPCION : {} - ID EMPLEADO VINCULADO : {}\n".format(dato[0], dato[1], dato[2], dato[3], dato[4])
+                string += registro
+            return string
     
     def agregar(r):
         try:
@@ -23,7 +32,6 @@ class GestionRegistros():
         except Exception as i:
             print(i)
 
-
     def eliminar(id):
         try:
             con=Conexion(host, user, password, db)
@@ -35,7 +43,6 @@ class GestionRegistros():
         except Exception as i:
             print(i)
 
-
     def editar(r):
         try:
             con=Conexion(host, user, password, db)
@@ -46,8 +53,6 @@ class GestionRegistros():
             con.desconectar()
         except Exception as i:
             print(i)
-
-
 
     def obtener_todos():
         try:
@@ -61,7 +66,6 @@ class GestionRegistros():
             con.rollback()
             print(i)
 
-
     def obtener_uno(id):
         try:
             con=Conexion(host, user, password, db)
@@ -73,7 +77,6 @@ class GestionRegistros():
         except Exception as i:
             con.rollback()
             print(i)
-
 
     def consulta_empleado(id):
         try:

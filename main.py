@@ -31,7 +31,7 @@ while (True):
     if op == 1:
         modulo_empleados.menuempleados()
     elif op == 2:
-        print("No implementado")
+        input("No implementado")
     elif op == 3:
         modulo_registros.menuregistros()
     elif op == 4:

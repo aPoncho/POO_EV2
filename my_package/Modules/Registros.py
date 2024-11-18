@@ -28,7 +28,7 @@ def menuregistros():
         if op == 1:
             ingresar_registros()
         elif op == 2:
-            input("No implementado")
+            menumostrar_registros()
         elif op == 3:
             input("No implementado")
         elif op == 4:
@@ -193,11 +193,8 @@ def mostrartodo_registros():
     if len(datos) == 0:
         print("No hay registros de tiempo en la base de datos ")
     else:
-        for dato in datos:
-            print(
-                " ID : {} - FECHA : {} - CANTIDAD DE HORAS TRABAJADAS : {} - DESCRIPCION : {} - ID EMPLEADO VINCULADO : {}".format(dato[0], dato[1], dato[2], dato[3], dato[4]))
-            print("--------------------------------------------------------------------------------------------------------------------------------------------------------")
-    time.sleep(2)
+        registros = GestionRegistros(datos)
+        print(registros)
     os.system("pause")
 
 def mostraruno_registros():
