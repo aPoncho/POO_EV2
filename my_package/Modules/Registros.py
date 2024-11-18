@@ -164,9 +164,9 @@ def menumostrar_registros():
         if op == 1:
             mostrartodo_registros()
         elif op == 2:
-            mostraruno_registros()
+            input("no implementado")
         elif op == 3:
-            mostrarparcial_empleados()
+            input("no implementado")
         elif op == 4:
             op2 = input("DESEA VOLVER? [SI/NO] :")
             if op2.lower() == "si":
