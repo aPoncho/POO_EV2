@@ -4,6 +4,7 @@ from my_package.DTO.Empleado import Empleado
 from my_package.DAO.CRUDDepartamento import GestionDepartamentos
 from my_package.DAO.CRUDRegistro import GestionRegistros
 from my_package.DTO.Registro import Registro
+import my_package.DAO.ConexionJSON as conjson
 import os, time
 from datetime import date
 
@@ -17,7 +18,8 @@ def menuempleados():
         print("       2.- MOSTRAR             ")
         print("       3.- MODIFICAR           ")
         print("       4.- ELIMINAR            ")
-        print("       5.- VOLVER              ")
+        print("       5.- IMPORTAR JSON       ")
+        print("       6.- VOLVER              ")
         print("===============================")
 
         try:
@@ -36,6 +38,8 @@ def menuempleados():
         elif op == 4:
             eliminardatos_empleados()
         elif op == 5:
+            importar_jason()
+        elif op == 6:
             break
         else:
             print("Opción Fuera de Rango")
@@ -494,3 +498,6 @@ def eliminar_varios(id_depto):
                 print('Operacion cancelada, volviendo al menu...')
                 time.sleep(2)
         
+def importar_jason():
+    data = conjson.obtener_datos_desde_api()
+    conjson.ingresar_jason(data)
