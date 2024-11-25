@@ -156,7 +156,6 @@ def ingresardatos_empleados():
     print(e)
     GestionEmpleados.agregar(e)
 
-
 #Menu 
 def menumostrar_empleados():
     while True:
@@ -243,7 +242,7 @@ def mostrarparcial_empleados():
             input("\n\n PRESIONE ENTER PARA CONTINUAR")
             break
 
-# Modificar datos (WORKING, falta testeo)
+#Modificar datos (WORKING, falta testeo)
 def modificardatos_empleados():
     os.system('cls')
     while True:

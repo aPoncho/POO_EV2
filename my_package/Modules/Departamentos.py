@@ -28,8 +28,7 @@ def menudepartamentos():
         elif op == 2:
             menumostrar_departamentos()
         elif op == 3:
-            input("No implementado")
-            #modificardatos_departamento()
+            modificardatos_departamento()
         elif op == 4:
             input("No implementado")
             #eliminardatos_departamento()
@@ -130,6 +129,7 @@ def mostraruno_departamento():
         except:
             input("No existe un departamento con este id, presione una tecla para volver")           
         break
+
 def mostrar_parcial():
     os.system('cls')
     while True:
@@ -155,40 +155,60 @@ def modificardatos_departamento():
     print("===========================================")
     print("       MODULO MODIFICAR DEPARTAMENTO       ")
     print("===========================================")
-    datos = DAO.CRUDDepartamento.mostrartodos()
-    if len(datos) == 0:
-        print("No hay departamentos en la base de datos ")
-        time.sleep(2)
-        return
-    mostrartodo_departamento()
-    mod = int(input("Ingrese valor de ID del Departamento que desea Modificar: "))
-    datos = DAO.CRUDDepartamento.consultaparticular(mod)
+    while True:
+        datos = GestionDepartamentos.obtener_todos()
+        if len(datos) == 0:
+            print("No hay departamentos en la base de datos ")
+            time.sleep(2)
+            break
+        else:
+            deptos = GestionDepartamentos(datos)
+            print(deptos)
+            while True:
+                try:
+                    mod = int(input("Ingrese valor de ID del Departamento que desea Modificar: "))
+                    break
+                except ValueError:
+                    print("Ingrese un numero valido")
+            
+            datos = GestionDepartamentos.obtener_uno(mod)
 
-    print("\n ID         : {}".format(datos[0]))
-    listanuevos.append(datos[0])
+            if datos == None:
+                input("No existen departamentos con esta id")
+                break
+            else:
+                depto = Departamento(datos[1], datos[2], datos[3], datos[0])
+                print("\n ID         : {}".format(depto.id))
+                listanuevos.append(datos[0])
 
-    opm = input("DESEA MODIFICAR EL NOMBRE : {} - [SI/NO] ".format(datos[1]))
-    if opm.lower() == "si":
-            nombrenuevo=input("INGRESE NOMBRE : ")
-            listanuevos.append(nombrenuevo)
-    else:
-        listanuevos.append(datos[1])
+                opm = input("DESEA MODIFICAR EL NOMBRE : {} - [SI/NO] ".format(depto.nombre_departamento))
+                if opm.lower() == "si":
+                        nombrenuevo=input("INGRESE NOMBRE : ")
+                        listanuevos.append(nombrenuevo)
+                else:
+                    listanuevos.append(datos[1])
 
-    opm = input("DESEA MODIFICAR LA UBICACION : {} - [SI/NO] ".format(datos[2]))
-    if opm.lower() == "si":
-            ubicacionnueva= input("INGRESE UBICACION : ")
-            listanuevos.append(ubicacionnueva)
-    else:
-        listanuevos.append(datos[2])
+                opm = input("DESEA MODIFICAR LA UBICACION : {} - [SI/NO] ".format(depto.ubicacion_departamento))
+                if opm.lower() == "si":
+                        ubicacionnueva= input("INGRESE UBICACION : ")
+                        listanuevos.append(ubicacionnueva)
+                else:
+                    listanuevos.append(datos[2])
 
-    opm = input("DESEA MODIFICAR EL GERENTE : {} - [SI/NO] ".format(datos[3]))
-    if opm.lower()== "si":
-            gerentenuevo = input("INGRESE DIRECCION : ")
-            listanuevos.append(gerentenuevo)
-    else:
-        listanuevos.append(datos[4])
+                opm = input("DESEA MODIFICAR EL GERENTE : {} - [SI/NO] ".format(depto.gerente_departamento))
+                if opm.lower()== "si":
+                        gerentenuevo = input("INGRESE DIRECCION : ")
+                        listanuevos.append(gerentenuevo)
+                else:
+                    listanuevos.append(datos[3])
 
-    DAO.CRUDDepartamento.editar(listanuevos)
+                new_depto = Departamento(listanuevos[1], listanuevos[2], listanuevos[3], listanuevos[0])
+                if new_depto.nombre_departamento != depto.nombre_departamento or new_depto.gerente_departamento != depto.gerente_departamento or new_depto.ubicacion_departamento != depto.ubicacion_departamento:
+                    GestionDepartamentos.editar(listanuevos)
+                    break
+                else:
+                    input("Datos no modificados, operación cancelada")
+                    break
 # Eliminar datos
 def eliminardatos_departamento():
     os.system('cls')
