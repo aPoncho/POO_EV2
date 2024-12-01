@@ -1,11 +1,11 @@
 [
     {
-      "run": "17681375-k",
+      "run": "17681000-k",
       "nombre": "Francisco",
       "apellido": "Barrios",
-      "direccion": "Condell #125",
-      "fono": 56971353780,
-      "correo":"fbarrioscor@gmail.com",
+      "direccion": "Yungay #125",
+      "fono": 56971353888,
+      "correo":"fbarrios@gmail.com",
       "cargo": "Marketing",
       "salario": 600000,
       "depto": 2
