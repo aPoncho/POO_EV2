@@ -1,0 +1,13 @@
+[
+    {
+      "run": "20123456-k",
+      "nombre": "Lucas",
+      "apellido": "Martinez",
+      "direccion": "Carlos #521 casa 4",
+      "fono": 56958922275,
+      "correo":"lucasmartinez@gmail.com",
+      "cargo": "Diseñador",
+      "salario": 1000000,
+      "depto": 2
+    }
+]
