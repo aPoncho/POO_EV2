@@ -3,7 +3,6 @@ import requests
 import mysql.connector
 
 
-
 def obtener_datos_desde_api():
     url = "https://raw.githubusercontent.com/aPoncho/POO_EV2/refs/heads/master/datos.json"
     try:
