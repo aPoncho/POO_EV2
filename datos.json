@@ -9,5 +9,27 @@
       "cargo": "Marketing",
       "salario": 600000,
       "depto": 2
+    },
+    {
+      "run": "20123123-4",
+      "nombre": "Lucas",
+      "apellido": "Martinez",
+      "direccion": "Condell #333",
+      "fono": 56922334455,
+      "correo":"lucasmartinez@gmail.com",
+      "cargo": "Diseñador",
+      "salario": 900000,
+      "depto": 2
+    },
+    {
+      "run": "22987654-3",
+      "nombre": "Charlotte",
+      "apellido": "Perez",
+      "direccion": "Av España #1234",
+      "fono": 56988776655,
+      "correo":"charpe@gmail.com",
+      "cargo": "CEO",
+      "salario": 1000000,
+      "depto": 2
     }
 ]
