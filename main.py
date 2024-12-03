@@ -6,6 +6,7 @@ import my_package.Modules.Registros as modulo_registros
 import my_package.Modules.Departamentos as modulo_departamentos
 import my_package.Modules.Empleados as modulo_empleados
 import my_package.Modules.Login as modulo_login
+import my_package.Modules.Proyectos as modulo_proyectos
 
 def menuprincipal():
 
@@ -30,7 +31,8 @@ def menuprincipal():
         if op == 1:
             modulo_empleados.menuempleados()
         elif op == 2:
-            input("No implementado")
+            modulo_proyectos.menuproyectos()
+            #input("No implementado")
         elif op == 3:
             modulo_registros.menuregistros()
         elif op == 4:

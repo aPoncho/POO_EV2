@@ -1,7 +1,8 @@
-import DAO.CRUDProyecto
+from my_package.DAO.CRUDProyecto import GestionProyectos
 import time, os
 from datetime import date
-from DTO.Proyecto import Proyecto
+from my_package.DTO.Proyecto import Proyecto
+from my_package.DAO.CRUDDepartamento import GestionDepartamentos
 
 def eliminar_varios_p(id_depto):
         datos = [DAO.CRUDProyecto.consulta_dpto(id_depto)]
@@ -24,22 +25,20 @@ def menuproyectos():
         print("       4.- ELIMINAR            ")
         print("       5.- VOLVER              ")
         print("===============================")
-        try:
-            op = int(input(" INGRESE OPCION : "))
-        except ValueError:
-            print("Debe ingresar un número.")
-            time.sleep(1)
-            os.system("cls")
-            continue
-        if op == 1:
+        
+        op = input(" INGRESE OPCION : ")
+        if op == '1':
             ingresar_proyecto()
-        elif op == 2:
-            menumostrar_proyectos()
-        elif op == 3:
-            modificardatos_proyectos()
-        elif op == 4:
-            eliminardatos_proyectos()
-        elif op == 5:
+        elif op == '2':
+            input("No implementado, PRESIONE CUALQUIER TECLA PARA CONTINUAR")
+            #menumostrar_proyectos()
+        elif op == '3':
+            input("No implementado, PRESIONE CUALQUIER TECLA PARA CONTINUAR")
+            #modificardatos_proyectos()
+        elif op == '4':
+            input("No implementado, PRESIONE CUALQUIER TECLA PARA CONTINUAR")
+            #eliminardatos_proyectos()
+        elif op == '5':
             break
         else:
             print("Opción Fuera de Rango")
@@ -51,7 +50,7 @@ def ingresar_proyecto():
     print("       INGRESAR PROYECTO       ")
     print("===============================")
     while True:
-        nombre=input("INGRESE NOMBRE PROYECTO: ")
+        nombre = input("INGRESE NOMBRE PROYECTO: ")
         if not nombre.isalpha():
             print("Debe ingresar un nombre válido.")
             time.sleep(1)
@@ -115,7 +114,7 @@ def ingresar_proyecto():
     print("====================================")
     print(" MUESTRA DE TODOS LOS DEPARTAMENTOS ")
     print("====================================")
-    datos = DAO.CRUDDepartamento.mostrartodos()
+    datos = GestionDepartamentos.obtener_todos()
     if len(datos) == 0:
         print("No hay departamentos en la base de datos ")
         time.sleep(1)
@@ -123,15 +122,17 @@ def ingresar_proyecto():
         time.sleep(2)
         return
     else:
-        for dato in datos:
-            print(
-                " ID : {} - NOMBRE : {} - UBICACION: {} - GERENTE : {} ".format(dato[0], dato[1], dato[2], dato[3]))
-            print("--------------------------------------------------------------------------------------------------------------------------------------------------------")
-    time.sleep(2)
+        departamentos = GestionDepartamentos(datos)
+        print(departamentos)
+        #for dato in datos:
+            #print(
+                #" ID : {} - NOMBRE : {} - UBICACION: {} - GERENTE : {} ".format(dato[0], dato[1], dato[2], dato[3]))
+            #print("--------------------------------------------------------------------------------------------------------------------------------------------------------")
+    time.sleep(0.5)
     while True:
         try:
             opcion = int(input("INGRESE ID DE DEPARTAMENTO AL QUE DESEA VINCULAR : "))
-            datos = DAO.CRUDDepartamento.consultaparticular(opcion)
+            datos = GestionDepartamentos.obtener_uno(opcion)
             if datos is None:
                 print(" No hay departamentos con ese id ")
                 continue
@@ -144,7 +145,7 @@ def ingresar_proyecto():
             continue
         
     p = Proyecto(nombre, descripcion, fecha_inicio, id_departamento)
-    DAO.CRUDProyecto.agregar(p)
+    GestionProyectos.agregar(p)
 # Mostrar
 def menumostrar_proyectos():
     while True:
