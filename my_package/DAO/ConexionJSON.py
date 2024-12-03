@@ -1,6 +1,7 @@
 import os
 import requests
 import mysql.connector
+from my_package.DTO.Empleado import Empleado
 
 
 def obtener_datos_desde_api():
@@ -16,9 +17,10 @@ def obtener_datos_desde_api():
     
 def ingresar_jason(data):
     print("Datos de json")
-    data = data
-    print(data)
+    #data = data
 
+    #print(data)
+    
     conn = mysql.connector.connect(
         host = 'localhost',
         user = 'userempresa',
@@ -27,7 +29,9 @@ def ingresar_jason(data):
     )
 
     cursor= conn.cursor()
-    for item in data: 
+    for item in data:
+        data = Empleado(item['run'],item['nombre'],item['apellido'],item['direccion'],item['fono'],item['correo'],item['cargo'],item['salario'],item['depto'])
+        print(data)
         try:
             cursor.execute('''
                 INSERT INTO empleados (RUT_e, Nombre_e, Apellido_e, Direccion_e, Fono_e, Correo_e, Cargo_e, Salario_e, Departamento_e)

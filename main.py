@@ -38,7 +38,8 @@ def menuprincipal():
         elif op == 5:
             op2 = input("DESEA SALIR [SI/NO] :")
             if op2.lower() == "si":
-                exit()
+                break
+                #exit()
             elif op2.lower() == "no":
                 print("Volviendo al menu..")
                 time.sleep(1)

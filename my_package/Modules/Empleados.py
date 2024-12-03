@@ -439,7 +439,7 @@ def eliminardatos_empleados():
             datos = GestionEmpleados.obtener_uno(elim)
             if datos == None:
                 print(" No hay empleados con ese id ")
-                print('Volviendo al menu...')           
+                input('Presione una tecla para volver al menu...')           
                 break
             else:
                 empleado = Empleado(datos[1],datos[2],datos[3],datos[4],datos[5],datos[6],datos[7],datos[8], datos[9], datos[0])
@@ -467,8 +467,7 @@ def eliminardatos_empleados():
                     if opm.lower() == "si":
                         GestionRegistros.eliminar_registro_empleado(elim)
                         GestionEmpleados.eliminar(elim)
-                        print(f'empleado ID: {empleado.id} eliminado exitosamente')
-                        time.sleep(1)
+                        input(f'\nEmpleado ID: {empleado.id} eliminado exitosamente')
                         break
                     else:
                         print('Operacion cancelada, volviendo al menu... ')
@@ -499,5 +498,54 @@ def eliminar_varios(id_depto):
                 time.sleep(2)
         
 def importar_jason():
-    data = conjson.obtener_datos_desde_api()
-    conjson.ingresar_jason(data)
+    try:
+        existe = False
+        data = conjson.obtener_datos_desde_api()
+        for dato in data:
+            empleado_existente = GestionEmpleados.obtener_uno_rut(dato['run'])
+            
+            if empleado_existente:
+                input("Empleado/s ya existente en la base de datos")
+                existe == True
+                return existe
+            '''
+            depto = GestionDepartamentos.obtener_uno(dato['depto'])
+            if dato['run'][-2] != '-':
+                input("Rut no cumple el formato")
+                existe == True
+                return existe
+            elif not dato['nombre'].isalpha() or not dato['apellido'].isalpha():
+                input("Nombre y/o apellido no cumplen el formato")
+                existe == True
+                return existe
+            elif dato['nombre'] == '' or dato['apellido'] == '':
+                input("Nombre y/o apellido no cumplen el formato")
+                existe == True
+                return existe
+            elif '#' not in dato['direccion']:
+                input("Direccion no cumplen el formato")
+                existe == True
+                return existe
+            elif type(dato['fono']) != int:
+                input("Fono no cumple el formato")
+                existe == True
+                return existe
+            elif not dato['correo'].endswith("@gmail.com"):
+                input("Correo no cumple el formato")
+                existe == True
+                return existe
+            elif type(dato['salario']) != int:
+                input("Salario no cumple el formato")
+                existe == True
+                return existe
+            elif depto == '':
+                input("Dpto no cumple el formato")
+                existe == True
+                return existe
+            '''
+
+        if existe == False: 
+            conjson.ingresar_jason(data)
+    
+    except Exception as e:
+        input(f'{e} \nPRESIONE UNA TECLA PARA CONTINUAR')

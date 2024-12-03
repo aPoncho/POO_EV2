@@ -53,7 +53,6 @@ class GestionEmpleados():
             sql= "DELETE FROM empleados WHERE ID_empleado={}".format(id)
             con.ejecuta_query(sql)
             con.commit()
-            input("\n \n Empleado Elimindado satisfactoreamente")
         except Exception as i:
             print(i)
 
@@ -114,4 +113,16 @@ class GestionEmpleados():
             ct_depto_e = valor.fetchone()[0]
             return ct_depto_e
         except Exception as i:
+            print(i)
+
+    def obtener_uno_rut(rut):
+        try:
+            con=Conexion(host, user, password, db)
+            sql="select * from empleados where rut_e='{}'".format(rut)
+            cursor=con.ejecuta_query(sql)
+            datos=cursor.fetchone()
+            con.desconectar()
+            return datos
+        except Exception as i:
+            con.rollback()
             print(i)

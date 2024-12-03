@@ -17,7 +17,7 @@ class Usuario(Persona):
 
     def __str__(self):
         datos = super().__str__()
-        return f"Usuario: {self.username} -- {self.tipo_usuario} -- {self.nombre} {self.apellido}"
+        return f"Usuario: {self.username} Tipo: {self.tipo_usuario} Nombre: {self.nombre} {self.apellido}"
 
     @staticmethod
     def login(username, password):
@@ -26,10 +26,8 @@ class Usuario(Persona):
         con_password='V3ntana.13'
         db='empresa'
         try:
-            #FIIIIIIXXXX
             con = Conexion(host, user, con_password, db)
             usuario_data = con.obtener_usuario(username)
-            print(usuario_data)
             if usuario_data:
                 hashed_password = usuario_data[2].encode('utf-8')
                 
@@ -42,11 +40,11 @@ class Usuario(Persona):
                         password_hash = usuario_data[2],
                         tipo_usuario = usuario_data[6]
                     )
-            else:
-                input('usuario no encontrado')    
+            else:    
                 return None
-        except:
+        except Exception as e:
             print ('ERROR')
+            print(e)
             return None
         
     @staticmethod
@@ -72,7 +70,8 @@ class Usuario(Persona):
             else:
                 print("Error al registrar el usuario.")
                 return None
-        except:
-            print('Error inesperado, revise la conexion con la base de datos')
+        except Exception as e:
+            input(f'{e} \n Presione cualquier tecla para continuar')
+            return None
 
      

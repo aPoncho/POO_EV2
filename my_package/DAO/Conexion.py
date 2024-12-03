@@ -30,7 +30,9 @@ class Conexion:
             datos = cursor.fetchone()
             return datos
         except Exception as e:
+            print("ERROR")
             print(e)
+            print("Revise su conexion con la base de datos")
 
     def agregarUsuario(self, username, password_hash, nombre, apellidos, email, tipo_usuario):
         
