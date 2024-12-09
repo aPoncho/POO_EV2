@@ -1,6 +1,6 @@
 [
     {
-      "run": "17681000-k",
+      "run": "176810001",
       "nombre": "Francisco",
       "apellido": "Barrios",
       "direccion": "Yungay #125",
@@ -11,7 +11,7 @@
       "depto": 2
     },
     {
-      "run": "20123123-4",
+      "run": "201231234",
       "nombre": "Lucas",
       "apellido": "Martinez",
       "direccion": "Condell #333",
@@ -22,7 +22,7 @@
       "depto": 2
     },
     {
-      "run": "22987654-3",
+      "run": "229876543",
       "nombre": "Charlotte",
       "apellido": "Perez",
       "direccion": "Av España #1234",
